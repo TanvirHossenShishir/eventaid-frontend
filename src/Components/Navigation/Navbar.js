@@ -5,14 +5,7 @@ import { navItems } from "./NavItems";
 import { Link } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { HiOutlineLogin } from "react-icons/hi";
-import { AiOutlineShopping } from "react-icons/ai";
-import {
-  FaTwitter,
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-} from "react-icons/fa";
-// import Avatar from "@mui/material/Avatar";
+
 import { Prevent } from "./Prevent"
 import { useNavigate } from "react-router-dom";
 
@@ -29,53 +22,66 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <IconContext.Provider value={{ color: "white", size: "1rem" }}>
+    <IconContext.Provider value={{ color: "#ED6A5E", size: "1rem" }}>
       <div class="navheader fixed-nav-bar">
         <Link to="/" class="logo">
-            event<span className="logo-part">aid</span>
-          </Link>
-            <Link to={{ pathname: "https://twitter.com" }} target="_blank">
-              <FaTwitter class="icn" />
-            </Link>
-            <Link to={{ pathname: "https://fb.com" }} target="_blank">
-              <FaFacebookF class="icn" />
-            </Link>
-            <Link to={{ pathname: "https://instagram.com" }} target="_blank">
-              <FaInstagram class="icn" />
-            </Link>
-            <Link to={{ pathname: "https://linkedin.com" }} target="_blank">
-              <FaLinkedinIn class="icn" />
-            </Link>
-            {!window.localStorage.getItem("isAuthenticated") && (
-              <button onClick={toggleModal} className="top-buttons">
-                <HiOutlineLogin class="login-icn" />
-                LOGIN
-              </button>
-            )}
-            {window.localStorage.getItem("isAuthenticated") && (
+          event<span className="logo-part">aid</span>
+        </Link>
+
+        {navItems.map((item) => {
+          if (item.title === "Blog") {
+            return (
               <Link
-                to="/dashboard"
-                className="top-buttons profile-link"
-                onMouseEnter={() => setProfileDropdown(true)}
-                onMouseLeave={() => setProfileDropdown(false)}
+                to={item.path}
+                className="navbar-link"
+                onMouseEnter={() => setDropdown(true)}
+                onMouseLeave={() => setDropdown(false)}
               >
-                {/* <Avatar
+                {item.title}
+                {/* {dropdown && <NavDropdown />} */}
+              </Link>
+            );
+          }
+          return (
+            <div
+              className="navbar-link"
+              onClick={Prevent(() => navigate(item.path))}
+            >
+              {item.title}
+            </div>
+          );
+        })}
+
+        {!window.localStorage.getItem("isAuthenticated") && (
+          <button onClick={toggleModal} className="top-buttons">
+            <HiOutlineLogin class="login-icn" />
+            LOGIN
+          </button>
+        )}
+        {window.localStorage.getItem("isAuthenticated") && (
+          <Link
+            to="/dashboard"
+            className="top-buttons profile-link"
+            onMouseEnter={() => setProfileDropdown(true)}
+            onMouseLeave={() => setProfileDropdown(false)}
+          >
+            {/* <Avatar
                   alt="Remy Sharp"
                   src="/images/avatar.jpg"
                   sx={{ width: 18, height: 18 }}
                 /> */}
-                <div className="profile-txt">
-                  {JSON.parse(window.localStorage.getItem("userdata")).username}
-                </div>
-              </Link>
-            )}
+            <div className="profile-txt">
+              {JSON.parse(window.localStorage.getItem("userdata")).username}
+            </div>
+          </Link>
+        )}
 
-            {modal && (
-              <div className="auth-modal">
-                <div onClick={toggleModal} className="overlay"></div>
-                <Authenticate />
-              </div>
-            )}
+        {modal && (
+          <div className="auth-modal">
+            <div onClick={toggleModal} className="overlay"></div>
+            <Authenticate />
+          </div>
+        )}
       </div>
     </IconContext.Provider>
   );

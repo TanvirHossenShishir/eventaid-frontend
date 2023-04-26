@@ -199,10 +199,10 @@ const Signin = () => {
               />
               <span id="icn-eye" onClick={toggleVisibility}>
                 {visibility.password === true && (
-                  <BsEye color="#ff681a" size="1rem" />
+                  <BsEye color="#ED6A5E" size="1rem" />
                 )}
                 {visibility.password === false && (
-                  <BsEye color="black" size="1rem" />
+                  <BsEye color="#777" size="1rem" />
                 )}
               </span>
             </div>

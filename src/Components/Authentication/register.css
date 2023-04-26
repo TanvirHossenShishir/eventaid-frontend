@@ -84,6 +84,32 @@ input:focus {
   margin-bottom: 7px;
 }
 
+.role-selection{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 18px;
+  margin-right: 11px;
+  align-items: center;
+}
+
+
+.role-text{
+  color: #777;
+  font-size: 0.9rem;
+}
+
+#role{
+  padding: 7px;
+  width: 120px;
+  color: #777;
+  background-color: white;
+  border: 1px solid #ddd;
+}
+#role:focus {
+    outline: none !important;
+    border:1px solid #ddd;
+}
+
 
 .btn-reg {
   background-color: var(--accent-color);
@@ -101,3 +127,4 @@ input:focus {
   font-size: 11px;
   color: red;
 }
+

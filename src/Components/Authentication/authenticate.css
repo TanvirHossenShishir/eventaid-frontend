@@ -5,23 +5,20 @@
 .tabs{
   width: 300px;
   margin-left: 0 !important;
-
+  display: flex;
 }
 
 
 .tab{
   color: var(--accent-color);
   border: none;
-  font-size: 1rem;
+  font-size: 0.8rem;
   padding: 15px;
+  width: 150px;
   font-weight: 600;
   cursor: pointer;
 }
 
-.tab:hover{
-  background-color: #ddd;
-}
-
-.tab:active{
+.selected{
   background-color: #ddd;
 }
