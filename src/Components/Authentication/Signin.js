@@ -117,8 +117,8 @@ const Signin = () => {
     formFields.forEach((field) => {
       isValid = validateField(field) && isValid;
     });
-    // if (isValid) setFormSubmission(true);
-    // else setFormSubmission(false);
+    if (isValid) setFormSubmission(true);
+    else setFormSubmission(false);
     return formSubmission;
   };
 

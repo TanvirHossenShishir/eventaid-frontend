@@ -19,6 +19,14 @@ const Navbar = () => {
   const [dropdown, setDropdown] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
 
+  const [activeItem, setActiveItem] = useState(navItems[0]);
+
+  const handleClick = (clickedItem) => {
+    console.log(clickedItem);
+    setActiveItem(clickedItem);
+    navigate(clickedItem.path);
+  };
+
   const navigate = useNavigate();
 
   return (
@@ -29,23 +37,10 @@ const Navbar = () => {
         </Link>
 
         {navItems.map((item) => {
-          if (item.title === "Blog") {
-            return (
-              <Link
-                to={item.path}
-                className="navbar-link"
-                onMouseEnter={() => setDropdown(true)}
-                onMouseLeave={() => setDropdown(false)}
-              >
-                {item.title}
-                {/* {dropdown && <NavDropdown />} */}
-              </Link>
-            );
-          }
           return (
             <div
-              className="navbar-link"
-              onClick={Prevent(() => navigate(item.path))}
+              className={`navbar-link ${activeItem === item ? "nav-active" : ""}`}
+              onClick={() => handleClick(item)}
             >
               {item.title}
             </div>

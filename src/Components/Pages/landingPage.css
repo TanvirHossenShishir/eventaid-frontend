@@ -12,12 +12,13 @@
     height: 100vh;
     overflow: hidden;
     position: relative;
-    background-position: center;
+    background-position: center calc(50% - 5vh);
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
     justify-content: center;
     animation: change 22s infinite ease-in-out;
+    /* background-attachment:fixed; */
 }
 
 @keyframes change{
@@ -27,7 +28,7 @@
     }
     25%
     {
-        background-image: url(../../../public/images/img2.jpg);
+        background-image: url(../../../public/images/img3.jpg);
     }
     50%
     {
@@ -53,23 +54,28 @@
 }
 .content h1{
     color: #fff;
-    font-size: 60px;
+    font-size: 28px;
     letter-spacing: 15px;
+    margin-left: 10px;
     text-shadow: 3px 3px 5px #7777779b;
 }
 .content h1 span{
+    font-size: 60px;
     color: #222;
-
+    
 }
 .get-started{
+    margin-top: 10px;
     background: var(--accent-color);
-    padding: 10px 24px;
+    padding: 16px 60px;
     text-decoration: none;
     font-size: 1rem;
-    font-weight: 500;
-    color: #222;
+    font-weight: 600;
+    /* font-weight: bold; */
+    /* color: #222; */
+    color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 60px;
     
 }
 .content button:hover{

@@ -1,0 +1,37 @@
+.footer {
+    background-color: #303030;
+    padding: 20px;
+    padding-bottom: 40px;
+}
+
+.footer-row {
+    display: flex;
+    justify-content: center;
+    color: white;
+}
+
+.company-name {
+    font-family: 'Caveat', cursive;
+    font-weight: 600;
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+
+.name-part{
+    font-family: 'Caveat', cursive;
+    font-weight: 400;
+    color: var(--accent-color);
+}
+
+
+.footer-text {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 20px;
+}
+
+.footer-icn{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
