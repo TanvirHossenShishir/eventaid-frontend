@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "./Components/Navigation/Navbar"
 import LandingPage from "./Components/Pages/LandingPage";
 import Footer from "./Components/Footer/Footer";
-import Dashboard from "./Components/Profile/Dashboard"
+import Dashboard from "./Components/Dashboard/Dashboard"
 import { Route, Routes } from "react-router-dom";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
@@ -13,7 +13,7 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path="/" element={<LandingPage/>} />
-        <Route exact path="/browse" element={<Dashboard/>} />
+        <Route exact path="/dashboard" element={<Dashboard/>} />
       </Routes>
       <Footer/>
     </>

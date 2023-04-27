@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import Avatar from "@mui/material/Avatar";
-import ViewProfile from "./ViewProfile";
-import EditProfile from "./EditProfile";
+import ManageVenues from "./ManageVenues";
+import ViewBookings from "./ViewBookings";
+import Notifications from "./Notifications"
+import AddVenue from "./AddVenue";
+
 import { useNavigate } from "react-router-dom";
 import "./profileDropdown.css";
 import { CgProfile } from "react-icons/cg";
@@ -13,41 +16,10 @@ import { FaStackOverflow } from "react-icons/fa";
 import { Prevent } from "../Navigation/Prevent";
 
 export default function Dashboard() {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [perviewFile, setpreviewFile] = useState(null);
-  const [file, setFile] = useState(null);
-  const [fileDataURL, setFileDataURL] = useState(null);
-  const changeHandler = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-    setFile(file);
-  };
-  useEffect(() => {
-    let fileReader,
-      isCancel = false;
-    if (file) {
-      fileReader = new FileReader();
-      fileReader.onload = (e) => {
-        const { result } = e.target;
-        if (result && !isCancel) {
-          setFileDataURL(result);
-        }
-      };
-      fileReader.readAsDataURL(file);
-    }
-    return () => {
-      isCancel = true;
-      if (fileReader && fileReader.readyState === 1) {
-        fileReader.abort();
-      }
-    };
-  }, [file]);
-
-  
-
   const [isActive, setIsActive] = useState(1);
+  const [showAddVenueForm, setShowAddVenueForm] = useState(false);
 
-  const options = ["My Profile", "Edit Profile", "My Booking", "Logout"];
+  const options = ["Manage Venues", "View Bookings", "Notifications"];
   const navigate = useNavigate();
 
   const handleRouteView = () => {
@@ -65,9 +37,9 @@ export default function Dashboard() {
     navigate("/dashboard");
   };
 
-  const handleRouteLogout = () => {
-    window.localStorage.clear();
-    // history.push("/blog");
+  const handleShowAddVenueForm = () => {
+    setIsActive(4);
+    navigate("/dashboard");
   };
 
   return (
@@ -75,7 +47,8 @@ export default function Dashboard() {
       <div className="dash-side-tab">
         {options.map((option) => (
           <div className="dash-side-btn-con">
-            {option === "My Profile" && (
+            {/* Option 1 */}
+            {option === "Manage Venues" && (
               <button
                 style={{
                   borderRight: isActive === 1 ? "2px solid teal" : "",
@@ -88,7 +61,9 @@ export default function Dashboard() {
                 {option}
               </button>
             )}
-            {option === "Edit Profile" && (
+
+            {/* Option 2 */}
+            {option === "View Bookings" && (
               <button
                 style={{
                   borderRight: isActive === 2 ? "2px solid teal" : "",
@@ -101,7 +76,9 @@ export default function Dashboard() {
                 {option}
               </button>
             )}
-            {option === "My Booking" && (
+
+            {/* Option 3 */}
+            {option === "Notifications" && (
               <button
                 style={{
                   borderRight: isActive === 3 ? "2px solid teal" : "",
@@ -122,44 +99,12 @@ export default function Dashboard() {
         ))}
       </div>
 
-      {isActive === 1 && <ViewProfile />}
-      {isActive === 2 && <EditProfile />}
-      {isActive === 3 && <EditProfile />}
-
-      <div className="dash-right-sidebar">
-        <Avatar
-          className="dash-profile-pic"
-          alt="Remy Sharp"
-          src={fileDataURL}
-          sx={{ width: 200, height: 200 }}
-        />
-        <label className="dash-username">
-          <span className="hello-label">Hello,&nbsp;</span>
-          {/* {JSON.parse(window.localStorage.getItem("userdata")).username}! */}
-        </label>
-
-        <button className="dash-upload-btn">
-          <label htmlFor="fileInput">
-            <HiUpload size="1.5rem" color="teal" id="profile-drop-icn" />
-            Upload Picture
-          </label>
-          <input
-            id="fileInput"
-            type="file"
-            required
-            onChange={changeHandler}
-            style={{ display: "none" }}
-          />
-        </button>
-
-        <button
-          className="dash-logout-btn"
-          onClick={Prevent(() => handleRouteLogout())}
-        >
-          <MdLogout size="1.5rem" color="#C62828" id="profile-drop-icn" />
-          Logout
-        </button>
-      </div>
+      {isActive === 1 && (
+        <ManageVenues handleShowAddVenueForm={handleShowAddVenueForm} />
+      )}
+      {isActive === 2 && <ViewBookings />}
+      {isActive === 3 && <Notifications />}
+      {isActive === 4 && <AddVenue />}
     </div>
   );
 }

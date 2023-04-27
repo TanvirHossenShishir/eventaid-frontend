@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import "./viewProfile.css";
-import "./editProfile.css";
+import "./viewBookings.css";
+import "./manageVenues.css";
 
-const EditProfile = () => {
+const ViewBookings = () => {
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -43,6 +43,12 @@ const EditProfile = () => {
         newpassword: formData.newpassword,
       });
       window.localStorage.setItem("formData", obj);
+
+    //   const formdata = JSON.parse(window.localStorage.getItem("formData"));
+    //   localStorage.setItem(
+    //     "userInfo",
+    //     JSON.stringify({ ...formdata, firstname: formData.firstname })
+    //   );
   };
 
   return (
@@ -137,4 +143,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default ViewBookings;
