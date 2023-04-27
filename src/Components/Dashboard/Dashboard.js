@@ -101,6 +101,9 @@ export default function Dashboard() {
       {isActive === 2 && <ViewBookings />}
       {isActive === 3 && <Notifications />}
       {isActive === 4 && <AddVenue />}
+
+
+      <div className="dash-side-tab"></div>
     </div>
   );
 }

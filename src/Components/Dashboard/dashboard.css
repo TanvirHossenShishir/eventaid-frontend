@@ -1,17 +1,18 @@
 .dash-main-container{
     background-color: white;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    /* justify-content: center; */
+    /* align-items: center; */
     height: 100%;   
 }
 
 .dash-side-tab{
-    /* margin: 50px; */
-
     padding: 50px;
-    /* min-width: 20%; */
-    height: fit-content;    
+    /* height: fit-content; */
+    height: 100vh;    
+    width: 100%;
+    background: #ddd;
+    /* position: absolute; */
 }
 
 .dash-side-btn-con{
@@ -27,7 +28,7 @@
 .dash-side-btn{
     border: none;
     border-radius: 0;
-    
+    background: transparent;
     /* margin-bottom: 15px; */
     padding: 10px 25px;
     /* background: #303030; */
