@@ -12,9 +12,9 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
 
   return (
     <div className="manage-venue-container">
-      <label className="manage-venue-title">Manage Venues</label>
+      <label className="manage-venue-title">VENUE LIST</label>
 
-      <button onClick={handleAddVenueClick}>Add Venue</button>
+      <button className="add-events-btn" onClick={handleAddVenueClick}>Add Venue</button>
     </div>
   );
 };

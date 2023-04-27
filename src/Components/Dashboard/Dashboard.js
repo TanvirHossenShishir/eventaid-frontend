@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import "./dashboard.css";
-import Avatar from "@mui/material/Avatar";
 import ManageVenues from "./ManageVenues";
 import ViewBookings from "./ViewBookings";
 import Notifications from "./Notifications"
@@ -10,14 +9,11 @@ import { useNavigate } from "react-router-dom";
 import "./profileDropdown.css";
 import { CgProfile } from "react-icons/cg";
 import { BiEdit } from "react-icons/bi";
-import { MdLogout } from "react-icons/md";
-import { HiUpload } from "react-icons/hi";
 import { FaStackOverflow } from "react-icons/fa";
 import { Prevent } from "../Navigation/Prevent";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
-  const [showAddVenueForm, setShowAddVenueForm] = useState(false);
 
   const options = ["Manage Venues", "View Bookings", "Notifications"];
   const navigate = useNavigate();
