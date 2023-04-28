@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./dashboard.css";
 import ManageVenues from "./ManageVenues";
 import ViewBookings from "./ViewBookings";
+import BookVenue from "./BookVenue"
 import Notifications from "./Notifications"
 import AddVenue from "./AddVenue";
 
@@ -15,7 +16,7 @@ import { Prevent } from "../Navigation/Prevent";
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
 
-  const options = ["Manage Venues", "View Bookings", "Notifications"];
+  const options = ["Manage Venues", "View Bookings", "Book Venue", "Notifications"];
   const navigate = useNavigate();
 
   const handleRouteView = () => {
@@ -27,14 +28,20 @@ export default function Dashboard() {
     setIsActive(2);
     navigate("/dashboard");
   };
-
-  const handleRouteBooking = () => {
+  
+  const handleRouteBook = () => {
     setIsActive(3);
     navigate("/dashboard");
   };
 
-  const handleShowAddVenueForm = () => {
+  const handleRouteBooking = () => {
     setIsActive(4);
+    navigate("/dashboard");
+  };
+
+
+  const handleShowAddVenueForm = () => {
+    setIsActive(5);
     navigate("/dashboard");
   };
 
@@ -48,12 +55,9 @@ export default function Dashboard() {
             {/* Option 1 */}
             {option === "Manage Venues" && (
               <button
-                style={{
-                  borderRight:
-                    isActive === 1 ? "2px solid var(--accent-color)" : "",
-                  backgroundColor: isActive === 1 ? "#eee" : "",
-                }}
-                className="dash-side-btn"
+                className={`dash-side-btn ${
+                  isActive === 1 ? "dash-active" : ""
+                }`}
                 onClick={Prevent(() => handleRouteView())}
               >
                 <BiEdit size="1.5rem" color="#F57F17" id="profile-drop-icn" />
@@ -64,12 +68,9 @@ export default function Dashboard() {
             {/* Option 2 */}
             {option === "View Bookings" && (
               <button
-                style={{
-                  borderRight:
-                    isActive === 2 ? "2px solid var(--accent-color)" : "",
-                  backgroundColor: isActive === 2 ? "#eee" : "",
-                }}
-                className="dash-side-btn"
+                className={`dash-side-btn ${
+                  isActive === 2 ? "dash-active" : ""
+                }`}
                 onClick={Prevent(() => handleRouteEdit())}
               >
                 <FaStackOverflow
@@ -82,14 +83,28 @@ export default function Dashboard() {
             )}
 
             {/* Option 3 */}
+            {option === "Book Venue" && (
+              <button
+                className={`dash-side-btn ${
+                  isActive === 3 ? "dash-active" : ""
+                }`}
+                onClick={Prevent(() => handleRouteBook())}
+              >
+                <CgProfile
+                  size="1.4rem"
+                  color="#E91E63"
+                  id="profile-drop-icn"
+                />
+                {option}
+              </button>
+            )}
+
+            {/* Option 4 */}
             {option === "Notifications" && (
               <button
-                style={{
-                  borderRight:
-                    isActive === 3 ? "2px solid var(--accent-color)" : "",
-                  backgroundColor: isActive === 3 ? "#eee" : "",
-                }}
-                className="dash-side-btn"
+                className={`dash-side-btn ${
+                  isActive === 4 ? "dash-active" : ""
+                }`}
                 onClick={Prevent(() => handleRouteBooking())}
               >
                 <CgProfile
@@ -108,8 +123,9 @@ export default function Dashboard() {
         <ManageVenues handleShowAddVenueForm={handleShowAddVenueForm} />
       )}
       {isActive === 2 && <ViewBookings />}
-      {isActive === 3 && <Notifications />}
-      {isActive === 4 && (
+      {isActive === 3 && <BookVenue />}
+      {isActive === 4 && <Notifications />}
+      {isActive === 5 && (
         <AddVenue
           venue={{
             venueName: "",

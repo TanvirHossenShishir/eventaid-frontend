@@ -1,0 +1,136 @@
+.book-venue-container {
+  background-color: white;
+  width: 59%;
+  padding: 40px 0px 40px 0px;
+  margin-left: 40px;
+  
+  margin-right: 12%;
+}
+
+.book-form-con{
+  display: flex;
+  justify-content: space-between;
+}
+
+.book-side-con {
+  /* background: coral; */
+  width: 46%;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-dropdown {
+  padding: 7px;
+  font-size: 1rem;
+  width: 100%;
+  color: #333;
+  background-color: white;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+.book-dropdown:focus {
+  outline: none !important;
+  border: 1px solid #ddd;
+}
+
+.book-date{
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: red;
+}
+
+.book-info {
+  font-size: 0.7rem;
+  color: var(--accent-color);
+  font-weight: 500; 
+}
+
+.label-con{
+  display: flex;
+  justify-content: space-between;
+}
+
+.book-guest{
+  width: 25%;
+  padding: 10px;
+  color: #333;
+  background-color: white;
+  border: 1px solid #ddd;
+
+}
+
+select,
+select option {
+  color: #333;
+}
+
+select:invalid,
+select option[value=""] {
+  color: #999999;
+}
+
+.book-mul-sel{
+  margin-bottom: 10px;
+}
+
+
+.book-venue-btn {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color, border-color, color, box-shadow, filter;
+  transition-duration: 0.3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 160px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px 14px 18px;
+  color: #4f545c;
+  box-shadow: inset 0 0 0 2px #4f545c;
+  background-color: transparent;
+  height: 48px;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.book-venue-btn:hover {
+  color: #fff;
+  background-color: #4f545c;
+}
+
+.book-cost-panel{
+  margin-top: 58px;
+}
+
+.book-price-row{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.book-price-att {
+  font-size: 0.9rem;
+  color: #444444;
+
+  font-weight: 500;
+}
+
+.book-price-val {
+  font-size: 0.9rem;
+  /* color: #444444; */
+  color: coral;
+  font-weight: 500;
+  margin-right: 20px;
+}
+
+.side-margin-fix{
+  margin-top: 60px;
+}

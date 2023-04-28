@@ -47,5 +47,9 @@
 .dash-side-btn:hover{
     color: var(--accent-color);
     background: #ddd;
+}
+
+.dash-active{
     border-right: 2px solid var(--accent-color);
+    background: #ddd;
 }

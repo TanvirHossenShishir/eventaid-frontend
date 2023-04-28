@@ -149,7 +149,7 @@ const AddVenue = ({venue, event, service, isUser}) => {
       />
 
       {/* ------------Event Details------------- */}
-      <label className="info-title">EVENTS:</label>
+      <label className="venue-info">EVENTS:</label>
       {submittedEventData.map((data, index) => (
         <div key={index} className="option-row">
           <div className="info-attribute">{data.eventName}</div>
@@ -210,7 +210,7 @@ const AddVenue = ({venue, event, service, isUser}) => {
       )}
 
       {/* ------------Food and Services------------- */}
-      <label className="info-title">FOODS & SERVICES:</label>
+      <label className="venue-info">FOODS & SERVICES:</label>
       {submittedServiceData.map((data, index) => (
         <div key={index} className="option-row">
           <div className="info-attribute">{data.serviceName}</div>
