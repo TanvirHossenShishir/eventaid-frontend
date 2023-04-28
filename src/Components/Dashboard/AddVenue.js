@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
 
-const AddVenue = () => {
+const AddVenue = ({venue, event, service, isUser}) => {
   // venue details
-  const [formData, setFormData] = useState({
-    venueName: "",
-    place: "",
-    contact: "",
-  });
+  const [formData, setFormData] = useState(venue);
+  // const [formData, setFormData] = useState({
+  //   venueName: "",
+  //   place: "",
+  //   contact: "",
+  // });
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -23,6 +24,7 @@ const AddVenue = () => {
     eventName: "",
     eventCost: "",
   });
+  
 
   const handleEventChange = (e) => {
     const name = e.target.name;
@@ -30,7 +32,7 @@ const AddVenue = () => {
     setEventData({ ...eventData, [name]: value });
   };
 
-  const [submittedEventData, setSubmittedEventData] = useState([]);
+  const [submittedEventData, setSubmittedEventData] = useState(event);
 
   const handleEventSubmit = () => {
     if (eventData.eventName === "" || eventData.eventCost === "") return;
@@ -75,7 +77,7 @@ const AddVenue = () => {
     setServiceData({ ...serviceData, [name]: value });
   };
 
-  const [submittedServiceData, setSubmittedServiceData] = useState([]);
+  const [submittedServiceData, setSubmittedServiceData] = useState(service);
 
   const handleServiceSubmit = () => {
     if (serviceData.serviceName === "" || serviceData.eventCost === "") return;
@@ -123,6 +125,7 @@ const AddVenue = () => {
         value={formData.venueName}
         onChange={handleChange}
         autoComplete="off"
+        disabled={isUser ? "disabled" : ""}
       />
       <input
         className="venue-input"
@@ -132,6 +135,7 @@ const AddVenue = () => {
         value={formData.place}
         onChange={handleChange}
         autoComplete="off"
+        disabled={isUser ? "disabled" : ""}
       />
       <input
         className="venue-input"
@@ -141,6 +145,7 @@ const AddVenue = () => {
         value={formData.contact}
         onChange={handleChange}
         autoComplete="off"
+        disabled={isUser ? "disabled" : ""}
       />
 
       {/* ------------Event Details------------- */}
@@ -150,6 +155,9 @@ const AddVenue = () => {
           <div className="info-attribute">{data.eventName}</div>
           <div className="info-sec">
             <div className="info-value">{data.eventCost} BDT</div>
+
+            { !isUser &&
+            <>
             <button
               className="option-btn"
               onClick={() => handleEventUpdate(index)}
@@ -162,6 +170,7 @@ const AddVenue = () => {
             >
               Delete
             </button>
+            </>}
           </div>
         </div>
       ))}
@@ -192,11 +201,13 @@ const AddVenue = () => {
         </div>
       )}
 
-      <div className="add-events-section">
-        <button className="add-events-btn" onClick={handleAddEvent}>
-          Add Event
-        </button>
-      </div>
+      {!isUser && (
+        <div className="add-events-section">
+          <button className="add-events-btn" onClick={handleAddEvent}>
+            Add Event
+          </button>
+        </div>
+      )}
 
       {/* ------------Food and Services------------- */}
       <label className="info-title">FOODS & SERVICES:</label>
@@ -205,6 +216,9 @@ const AddVenue = () => {
           <div className="info-attribute">{data.serviceName}</div>
           <div className="info-sec">
             <div className="info-value">{data.serviceCost} BDT</div>
+
+            { !isUser &&
+            <>
             <button
               className="option-btn"
               onClick={() => handleServiceUpdate(index)}
@@ -217,6 +231,9 @@ const AddVenue = () => {
             >
               Delete
             </button>
+            </>
+            }
+
           </div>
         </div>
       ))}
@@ -247,15 +264,18 @@ const AddVenue = () => {
         </div>
       )}
 
-      <div className="add-events-section">
-        <button className="add-events-btn" onClick={handleAddService}>
-          Add Food/Service
-        </button>
-      </div>
+      {!isUser && (
+        <>
+        <div className="add-events-section">
+          <button className="add-events-btn" onClick={handleAddService}>
+            Add Food/Service
+          </button>
+        </div>
 
-      <button className="save-venue-btn" onClick={handleSubmit}>
-        SAVE VENUE
-      </button>
+        <button className="save-venue-btn" onClick={handleSubmit}>
+          SAVE VENUE
+        </button>
+      </>)}
     </div>
   );
 };

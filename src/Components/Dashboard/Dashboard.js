@@ -38,6 +38,8 @@ export default function Dashboard() {
     navigate("/dashboard");
   };
 
+  
+
   return (
     <div className="dash-main-container">
       <div className="dash-side-tab">
@@ -47,13 +49,14 @@ export default function Dashboard() {
             {option === "Manage Venues" && (
               <button
                 style={{
-                  borderRight: isActive === 1 ? "2px solid teal" : "",
+                  borderRight:
+                    isActive === 1 ? "2px solid var(--accent-color)" : "",
                   backgroundColor: isActive === 1 ? "#eee" : "",
                 }}
                 className="dash-side-btn"
                 onClick={Prevent(() => handleRouteView())}
               >
-                <CgProfile size="1.4rem" color="#F57F17" id="nav-drop-icn" />
+                <BiEdit size="1.5rem" color="#F57F17" id="profile-drop-icn" />
                 {option}
               </button>
             )}
@@ -62,13 +65,18 @@ export default function Dashboard() {
             {option === "View Bookings" && (
               <button
                 style={{
-                  borderRight: isActive === 2 ? "2px solid teal" : "",
+                  borderRight:
+                    isActive === 2 ? "2px solid var(--accent-color)" : "",
                   backgroundColor: isActive === 2 ? "#eee" : "",
                 }}
                 className="dash-side-btn"
                 onClick={Prevent(() => handleRouteEdit())}
               >
-                <BiEdit size="1.5rem" color="#4DD0E1" id="profile-drop-icn" />
+                <FaStackOverflow
+                  size="1.5rem"
+                  color="#4DD0E1"
+                  id="profile-drop-icn"
+                />
                 {option}
               </button>
             )}
@@ -77,14 +85,15 @@ export default function Dashboard() {
             {option === "Notifications" && (
               <button
                 style={{
-                  borderRight: isActive === 3 ? "2px solid teal" : "",
+                  borderRight:
+                    isActive === 3 ? "2px solid var(--accent-color)" : "",
                   backgroundColor: isActive === 3 ? "#eee" : "",
                 }}
                 className="dash-side-btn"
                 onClick={Prevent(() => handleRouteBooking())}
               >
-                <FaStackOverflow
-                  size="1.5rem"
+                <CgProfile
+                  size="1.4rem"
                   color="#E91E63"
                   id="profile-drop-icn"
                 />
@@ -100,10 +109,18 @@ export default function Dashboard() {
       )}
       {isActive === 2 && <ViewBookings />}
       {isActive === 3 && <Notifications />}
-      {isActive === 4 && <AddVenue />}
-
-
-      <div className="dash-side-tab"></div>
+      {isActive === 4 && (
+        <AddVenue
+          venue={{
+            venueName: "",
+            place: "",
+            contact: "",
+          }}
+          event={[]}
+          service={[]}
+          isUser={false}
+        />
+      )}
     </div>
   );
 }

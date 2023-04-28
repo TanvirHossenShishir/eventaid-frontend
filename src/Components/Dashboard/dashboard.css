@@ -1,22 +1,24 @@
 .dash-main-container{
     background-color: white;
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     /* align-items: center; */
     height: 100%;   
 }
 
 .dash-side-tab{
-    padding: 50px;
-    /* height: fit-content; */
+    padding: 40px 0px 40px 0px;
+    margin-right: 40px;
+    margin-left: 12%;
     height: 100vh;    
-    width: 100%;
-    background: #ddd;
+    /* width: 100%; */
+    /* background: #ddd; */
     /* position: absolute; */
 }
 
 .dash-side-btn-con{
     width: 220px;
+    
 }
 
 #profile-drop-icn{
@@ -31,7 +33,7 @@
     background: transparent;
     /* margin-bottom: 15px; */
     padding: 10px 25px;
-    /* background: #303030; */
+    background: #efefef;
     /* border-radius: 5px; */
     color: #303030;
     font-weight: 600;
@@ -43,68 +45,7 @@
 }
 
 .dash-side-btn:hover{
-    /* background: #eee; */
-    /* border-right: 2px solid teal; */
-    color: #ff681a;
-}
-
-/* .dash-profile-pic{
-    margin: 50px 50px 20px 50px;
-} */
-
-.dash-right-sidebar{
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.dash-logout-btn{
-    border: 1px solid #C62828;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background: white;
-    border-radius: 5px;
-    color: #303030;
-    font-weight: 600;
-    width: 180px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.dash-logout-btn:hover{
-    color: #C62828;
-}
-
-.dash-upload-btn{
-    border: 1px solid teal;
-    padding: 10px 20px;
-    background: #fff;
-    border-radius: 5px;
-    color: #303030;
-    font-weight: 600;
-    width: 180px;
-    margin-top: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.dash-upload-btn:hover{
-    color: teal;
-}
-
-.dash-username{
-    font-size: 1.1rem;
-    font-weight: 500;
-    margin-top: 10px;
-}
-
-.hello-label{
-    font-size: 1.1rem;
-    font-weight: 400;
+    color: var(--accent-color);
+    background: #ddd;
+    border-right: 2px solid var(--accent-color);
 }

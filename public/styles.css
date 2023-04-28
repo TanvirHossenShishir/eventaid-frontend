@@ -2,6 +2,11 @@
   display: none;
 }
 
-#root{
+#root {
   margin-top: 60px;
+}
+
+:root {
+  --accent-color: #ed6a5e;
+  --dim-text-color: #D3D3D3;
 }

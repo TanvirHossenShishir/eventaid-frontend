@@ -2,8 +2,6 @@
 
 
 * {
-  --accent-color:#ED6A5E;
-  --dim-text-color: #D3D3D3;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -29,8 +27,8 @@
   height: 60px;
   align-items: center;
   justify-content: flex-end;
-  padding-left: 5%;
-  padding-right: 5%;
+  padding-left: 12%;
+  padding-right: 12%;
 }
 
 .logo {
