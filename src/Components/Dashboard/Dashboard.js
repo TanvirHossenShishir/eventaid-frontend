@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./dashboard.css";
 import ManageVenues from "./ManageVenues";
 import ViewBookings from "./ViewBookings";
-import BookVenue from "./BookVenue"
-import Notifications from "./Notifications"
+import BookVenue from "./BookVenue";
+import Notifications from "./Notifications";
 import AddVenue from "./AddVenue";
 
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,12 @@ import { Prevent } from "../Navigation/Prevent";
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
 
-  const options = ["Manage Venues", "View Bookings", "Book Venue", "Notifications"];
+  const options = [
+    "Manage Venues",
+    "View Bookings",
+    "Book Venue",
+    "Notifications",
+  ];
   const navigate = useNavigate();
 
   const handleRouteView = () => {
@@ -28,7 +33,7 @@ export default function Dashboard() {
     setIsActive(2);
     navigate("/dashboard");
   };
-  
+
   const handleRouteBook = () => {
     setIsActive(3);
     navigate("/dashboard");
@@ -39,13 +44,10 @@ export default function Dashboard() {
     navigate("/dashboard");
   };
 
-
   const handleShowAddVenueForm = () => {
     setIsActive(5);
     navigate("/dashboard");
   };
-
-  
 
   return (
     <div className="dash-main-container">

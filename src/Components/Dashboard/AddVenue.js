@@ -1,8 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
+import axios from "axios";
 
-const AddVenue = ({venue, event, service, isUser}) => {
+const AddVenue = ({ venue, event, service, isUser }) => {
+  const createEvent = (venue, foodList, eventList) => {
+    const url = "http://localhost:8081/api/venues/events";
+    const data = {
+      venueDto: venue,
+      foodorServicesList: foodList,
+      eventDtoList: eventList,
+    };
+
+    axios
+      .post(url, data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   // venue details
   const [formData, setFormData] = useState(venue);
   // const [formData, setFormData] = useState({
@@ -24,7 +43,6 @@ const AddVenue = ({venue, event, service, isUser}) => {
     eventName: "",
     eventCost: "",
   });
-  
 
   const handleEventChange = (e) => {
     const name = e.target.name;
@@ -110,6 +128,7 @@ const AddVenue = ({venue, event, service, isUser}) => {
 
   const navigate = useNavigate();
   const handleSubmit = () => {
+    createEvent(formData, submittedServiceData, submittedEventData);
     navigate("/dashboard");
   };
 
@@ -156,21 +175,22 @@ const AddVenue = ({venue, event, service, isUser}) => {
           <div className="info-sec">
             <div className="info-value">{data.eventCost} BDT</div>
 
-            { !isUser &&
-            <>
-            <button
-              className="option-btn"
-              onClick={() => handleEventUpdate(index)}
-            >
-              Update
-            </button>
-            <button
-              className="option-btn"
-              onClick={() => handleEventDelete(index)}
-            >
-              Delete
-            </button>
-            </>}
+            {!isUser && (
+              <>
+                <button
+                  className="option-btn"
+                  onClick={() => handleEventUpdate(index)}
+                >
+                  Update
+                </button>
+                <button
+                  className="option-btn"
+                  onClick={() => handleEventDelete(index)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </div>
       ))}
@@ -217,23 +237,22 @@ const AddVenue = ({venue, event, service, isUser}) => {
           <div className="info-sec">
             <div className="info-value">{data.serviceCost} BDT</div>
 
-            { !isUser &&
-            <>
-            <button
-              className="option-btn"
-              onClick={() => handleServiceUpdate(index)}
-            >
-              Update
-            </button>
-            <button
-              className="option-btn"
-              onClick={() => handleServiceDelete(index)}
-            >
-              Delete
-            </button>
-            </>
-            }
-
+            {!isUser && (
+              <>
+                <button
+                  className="option-btn"
+                  onClick={() => handleServiceUpdate(index)}
+                >
+                  Update
+                </button>
+                <button
+                  className="option-btn"
+                  onClick={() => handleServiceDelete(index)}
+                >
+                  Delete
+                </button>
+              </>
+            )}
           </div>
         </div>
       ))}
@@ -266,16 +285,17 @@ const AddVenue = ({venue, event, service, isUser}) => {
 
       {!isUser && (
         <>
-        <div className="add-events-section">
-          <button className="add-events-btn" onClick={handleAddService}>
-            Add Food/Service
-          </button>
-        </div>
+          <div className="add-events-section">
+            <button className="add-events-btn" onClick={handleAddService}>
+              Add Food/Service
+            </button>
+          </div>
 
-        <button className="save-venue-btn" onClick={handleSubmit}>
-          SAVE VENUE
-        </button>
-      </>)}
+          <button className="save-venue-btn" onClick={handleSubmit}>
+            SAVE VENUE
+          </button>
+        </>
+      )}
     </div>
   );
 };

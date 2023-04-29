@@ -1,6 +1,5 @@
 import React from "react";
-import "./viewProfile.css"
-
+import "./viewProfile.css";
 
 const ViewProfile = () => {
   return (
@@ -14,7 +13,7 @@ const ViewProfile = () => {
       <label className="view-prof-title">MY PROFILE</label>
 
       <label className="info-title">BASIC INFORMATION</label>
-      
+
       <label className="info-row">
         <span className="info-attribute">First Name:</span>
         <span className="info-value">

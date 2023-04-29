@@ -9,88 +9,6 @@ const Signin = () => {
     password: "",
   });
 
-  
-
-  async function fetchData() {
-    let isEmpty = false;
-    let a = userData.username;
-    let b = userData.password;
-
-    // win.setItem('userdata',JSON.stringify(userData));
-    // console.log(JSON.parse(win.getItem("userdata")));
-
-    await axios
-      .get(`http://127.0.0.1:8000/register?username=${a}&userpass=${b}`)
-      .then((resp) => {
-        let data = [];
-        data = resp.data;
-        let result = data
-          .filter(
-            (log_info) =>
-              log_info.UserName === userData.username &&
-              log_info.UserPass === userData.password
-          );
-          // .map((log_info) => log_info.UserName);
-        // let regInfo = data
-        //   .filter(
-        //     (info) =>
-        //       info.UserName === userData.username &&
-        //       info.UserPass === userData.password
-        //   );
-        // console.log("data: ", regInfo);
-        isEmpty = Object.keys(result).length === 0;
-        console.log(result);
-        if (isEmpty) {
-          setError({ loginError: "Login Unsuccessful. Try Again!" });
-          setFormSubmission(false);
-        } else {
-          console.log("founded");
-          fetch(`http://127.0.0.1:8000/login`, {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              UserName: a,
-              UserPass: b,
-            }),
-          })
-            .then((res) => res.json())
-            .then(
-              (result) => {
-                alert(result);
-              },
-              (error) => {
-                alert("Failed");
-              }
-            );
-          setFormSubmission(true);
-
-          // saving status in local storage after successful login
-          window.localStorage.setItem("isAuthenticated", true);
-          // window.localStorage.setItem(
-          //   "userdata",
-          //   JSON.stringify(result)
-          // );  
-
-          let un = result.map((val) => val.UserName);
-          let up = result.map((val) => val.UserEmail);
-          let obj = JSON.stringify({
-              username: un,
-              useremail: up,
-            });
-
-          window.localStorage.setItem("userdata", obj);
-          
-            
-          window.location.reload();
-        }
-      });
-
-      
-  }
-
   const [visibility, setVisibility] = useState({
     password: false,
   });
@@ -100,7 +18,7 @@ const Signin = () => {
   const [error, setError] = useState({
     usernameError: "",
     passwordError: "",
-    loginError: ""
+    loginError: "",
   });
 
   const handleChange = (e) => {
@@ -110,7 +28,7 @@ const Signin = () => {
     return;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let formFields = ["username", "password"];
     let isValid = true;
@@ -119,6 +37,54 @@ const Signin = () => {
     });
     if (isValid) setFormSubmission(true);
     else setFormSubmission(false);
+
+    await axios
+      .post("http://localhost:8081/api/users/login", {
+        name: userData.username,
+        password: userData.password,
+        email: "",
+        role: "",
+      })
+      .then((response) => {
+        // handle the response
+        console.log(response.data);
+        alert(response.data.message);
+        if (response.data.success == true) {
+          setUserData({
+            username: "",
+            password: "",
+          });
+          axios
+            .get(
+              `http://localhost:8081/api/users/username/${userData.username}`
+            )
+            .then((resp) => {
+              console.log(resp.data);
+              window.localStorage.setItem("isAuthenticated", true);
+              let result = resp.data;
+              let uid = resp.data.id;
+              let un = resp.data.name;
+              let up = resp.data.email;
+              let obj = JSON.stringify({
+                id: uid,
+                username: un,
+                useremail: up,
+              });
+
+              window.localStorage.setItem("userdata", obj);
+            });
+          window.location.reload();
+          setFormSubmission(true);
+        } else {
+          setFormSubmission(false);
+          return formSubmission;
+        }
+      })
+      .catch((error) => {
+        // handle the error
+        console.log(error);
+      });
+
     return formSubmission;
   };
 
@@ -212,7 +178,7 @@ const Signin = () => {
             {error.loginError && (
               <div className="errorMsg">{error.loginError}</div>
             )}
-            <button className="btn-reg" onClick={fetchData}>
+            <button className="btn-reg" onClick={handleSubmit}>
               Login
             </button>
           </form>

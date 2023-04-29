@@ -1,10 +1,10 @@
 import React from "react";
-import Navbar from "./Components/Navigation/Navbar"
+import Navbar from "./Components/Navigation/Navbar";
 import LandingPage from "./Components/Pages/LandingPage";
 import Footer from "./Components/Footer/Footer";
-import Dashboard from "./Components/Dashboard/Dashboard"
-import ViewProfile from "./Components/Profile/ViewProfile"
-import EditProfile from "./Components/Profile/EditProfile"
+import Dashboard from "./Components/Dashboard/Dashboard";
+import ViewProfile from "./Components/Profile/ViewProfile";
+import EditProfile from "./Components/Profile/EditProfile";
 import { Route, Routes } from "react-router-dom";
 // import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
