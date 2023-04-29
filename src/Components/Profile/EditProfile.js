@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "./viewProfile.css";
 import "./editProfile.css";
@@ -30,7 +31,7 @@ const EditProfile = () => {
     return;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async() => {
       console.log("after save change: ", formData);
       let obj = JSON.stringify({
         firstname: formData.firstname,
@@ -43,6 +44,25 @@ const EditProfile = () => {
         newpassword: formData.newpassword,
       });
       window.localStorage.setItem("formData", obj);
+
+      const userId = JSON.parse(window.localStorage.getItem("userdata")).id; // replace with the actual user ID
+      await axios.post(`http://localhost:8081/api/personalInfo/${userId}`, {
+        firstname: formData.firstname,
+        lastname: formData.lastname,
+        email: JSON.parse(window.localStorage.getItem("userdata")).useremail,
+        gender: formData.gender,
+        phone: formData.phone,
+        address: formData.address
+      })
+        .then(response => {
+          console.log(response.data);
+          // do something with the response
+        })
+        .catch(error => {
+          console.log(error);
+          // handle the error
+        });
+    
   };
 
   return (

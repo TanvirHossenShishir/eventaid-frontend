@@ -1,8 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
+import axios from 'axios';
 
 const AddVenue = ({venue, event, service, isUser}) => {
+
+
+const createEvent = (venue, foodList, eventList) => {
+  const url = 'http://localhost:8081/api/venues/events';
+  const data = {
+    venueDto: venue,
+    foodorServicesList: foodList,
+    eventDtoList: eventList
+  };
+
+  axios.post(url, data)
+    .then(response => {
+      console.log(response.data);
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
   // venue details
   const [formData, setFormData] = useState(venue);
   // const [formData, setFormData] = useState({
@@ -110,6 +130,7 @@ const AddVenue = ({venue, event, service, isUser}) => {
 
   const navigate = useNavigate();
   const handleSubmit = () => {
+    createEvent(formData,submittedServiceData,submittedEventData);
     navigate("/dashboard");
   };
 

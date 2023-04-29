@@ -132,8 +132,22 @@ export default function Dashboard() {
             place: "",
             contact: "",
           }}
-          event={[]}
-          service={[]}
+          event={[{
+            eventName:"sdfah",
+            eventCost:20,
+          },
+          {
+            eventName:"sdfah",
+            eventCost:20,
+          }]}
+          service={[{
+            serviceName:"sdfah",
+            serviceCost:20,
+          },
+          {
+            serviceName:"sdfah",
+            serviceCost:20,
+          }]}
           isUser={false}
         />
       )}

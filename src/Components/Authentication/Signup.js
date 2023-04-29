@@ -276,7 +276,7 @@ const Signup = () => {
 
 
 
-
+import axios from "axios";
 import "./register.css";
 import React, { useState } from "react";
 import { BsEye } from "react-icons/bs";
@@ -385,9 +385,32 @@ const Signup = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async  (e) => {
     e.preventDefault();
     // handle form submission
+    await axios.post('http://localhost:8081/api/users/register', {
+      name: userData.username,
+      password: userData.password,
+      email: userData.email,
+      role: userData.role
+  })
+  .then(response => {
+    // handle the response
+    console.log(response.data.success);
+    alert(response.data.message);
+    if(response.data.success==true)setUserData({
+      username: "",
+      email: "",
+      password: "",
+      repeatPassword: "",
+      role: "", // new field for role selection
+    });
+
+  })
+  .catch(error => {
+    // handle the error
+    console.log(error)
+  });
   };
 
   const toggleVisibility = (e) => {
