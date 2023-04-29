@@ -1,34 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./bookVenue.css";
 import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
-import MultiSelect from "react-multiple-select-dropdown-lite";
-import "../3rdParty/index.css";
-
+import axios from "axios";
+import { MultiSelect } from "react-multi-select-component";
+import moment from "moment";
 
 const BookVenue = () => {
   const [place, setPlace] = useState("");
   const [venue, setVenue] = useState("");
   const [event, setEvent] = useState("");
-  const [guests, setGuests] = useState("");
-  const [food, setFood] = useState("");
-  const [service, setService] = useState("");
+  const [guests, setGuests] = useState(0);
+  const [food, setFood] = useState([]);
+  const [service, setService] = useState([]);
+
   const [eventCost, setEventCost] = useState(0);
   const [foodCost, setFoodCost] = useState(0);
   const [serviceCost, setServiceCost] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
 
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+
+
+  const [focusedInput, setFocusedInput] = useState(null);
+  
+  const handleDatesChange = ({ startDate, endDate }) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
+
+  const [venues, setVenues] = useState([]);
+
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
+    setVenue("");
+    setEvent("");
+    setFood([]);
+    setService([]);
+
+    axios
+      .get(`http://localhost:8081/api/venues/all/${e.target.value}`)
+      .then((resp) => {
+        console.log(resp.data);
+        let result = resp.data;
+        setVenues(result);
+      });
   };
+
+  const foodOptions = venues
+    .filter((venue_) => venue_.venueName === venue)
+    .map((venue_) =>
+      venue_.foods.map(({ serviceName, serviceCost }) => ({
+        label: `${serviceName}: ${serviceCost}/-`,
+        value: serviceName,
+      }))
+    )
+    .flat();
 
   const handleVenueChange = (e) => {
     setVenue(e.target.value);
   };
 
+  const filteredEvents = venue
+    ? venues.find((v) => v.venueName === venue).events
+    : [];
+
+  useEffect(() => {
+    const startMoment = moment(startDate);
+    const endMoment = moment(endDate);
+    const diffInDays = moment.duration(endMoment.diff(startMoment)).asDays();
+
+    console.log("diff: ", diffInDays);
+
+    let sev = event;
+    let selectedEvent = filteredEvents.find((event) => event.eventName === sev);
+    let eventCost = selectedEvent ? selectedEvent.eventCost : 0;
+
+    let foodCost = food.reduce(
+      (total, option) =>
+        total +
+        venues
+          .find((v) => v.venueName === venue)
+          .foods.find((f) => f.serviceName === option.value).serviceCost,
+      0
+    );
+    let serviceCost = service.reduce(
+      (total, option) =>
+        total +
+        venues
+          .find((v) => v.venueName === venue)
+          .foods.find((f) => f.serviceName === option.value).serviceCost,
+      0
+    );
+    eventCost = parseInt(eventCost);
+    foodCost = parseInt(foodCost);
+    foodCost = guests > 0 ? foodCost * guests : foodCost;
+    serviceCost = parseInt(serviceCost);
+    let totalCost = eventCost + foodCost + serviceCost;
+    
+    setEventCost(eventCost);
+    setFoodCost(foodCost);
+    setServiceCost(serviceCost);
+    setTotalCost(totalCost);
+  }, [guests, event, food, service, startDate, endDate]);
+
+  
   const handleEventChange = (e) => {
+    const selectedEvent = filteredEvents.find(
+      (event) => event.eventName === e.target.value
+    );
     setEvent(e.target.value);
+    setEventCost(selectedEvent ? selectedEvent.eventCost : 0);
   };
 
   const handleGuestsChange = (e) => {
@@ -43,34 +127,9 @@ const BookVenue = () => {
     setService(e);
   };
 
-  const calculateCosts = () => {
-    //Cost Calculation
-    setEventCost(eventCost);
-    setFoodCost(foodCost);
-    setServiceCost(serviceCost);
-    setTotalCost(totalCost);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    calculateCosts();
   };
-
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
-  const [focusedInput, setFocusedInput] = useState(null);
-
-  const handleDatesChange = ({ startDate, endDate }) => {
-    setStartDate(startDate);
-    setEndDate(endDate);
-  };
-
-  const options = [
-    { label: "Option 1", value: "option_1" },
-    { label: "Option 2", value: "option_2" },
-    { label: "Option 3", value: "option_3" },
-    { label: "Option 4", value: "option_4" },
-  ];
 
   return (
     <div className="book-venue-container">
@@ -104,9 +163,11 @@ const BookVenue = () => {
               <option value="" selected disabled hidden>
                 Select...
               </option>
-              <option value="Hotel">Hotel</option>
-              <option value="Banquet Hall">Banquet Hall</option>
-              <option value="Restaurant">Restaurant</option>
+              {venues.map((venue, index) => (
+                <option key={index} value={venue.venueName}>
+                  {venue.venueName}
+                </option>
+              ))}
             </select>
 
             <label className="book-info">EVENT:</label>
@@ -120,27 +181,37 @@ const BookVenue = () => {
               <option value="" selected disabled hidden>
                 Select...
               </option>
-              <option value="Wedding">Wedding</option>
-              <option value="Birthday Party">Birthday Party</option>
-              <option value="Corporate Event">Corporate Event</option>
+              {filteredEvents.map((event, index) => (
+                <option key={index} value={`${event.eventName}`}>
+                  {`${event.eventName}: ${event.eventCost}/-`}
+                </option>
+              ))}
             </select>
 
             <label className="book-info">FOODS:</label>
             <div className="book-mul-sel">
-              <MultiSelect onChange={handleFoodChange} options={options} />
+              <MultiSelect
+                options={foodOptions}
+                value={food}
+                onChange={handleFoodChange}
+                labelledBy="Select"
+              />
             </div>
 
             <label className="book-info">SERVICES:</label>
-            <div className="book-mul-sel">
-              <MultiSelect onChange={handleServiceChange} options={options} />
-            </div>
+            <MultiSelect
+              options={foodOptions}
+              value={service}
+              onChange={handleServiceChange}
+              labelledBy="Select"
+            />
           </div>
 
           <div className="book-side-con">
-          <div className="label-con side-margin-fix">
-            <label className="book-info">DATE:</label>
-            <label className="book-info">NO OF GUEST:</label>
-          </div>
+            <div className="label-con side-margin-fix">
+              <label className="book-info">DATE:</label>
+              <label className="book-info">NO OF GUEST:</label>
+            </div>
             <div className="book-date">
               <DateRangePicker
                 startDate={startDate}
@@ -163,19 +234,19 @@ const BookVenue = () => {
             <div className="book-cost-panel">
               <div className="book-price-row">
                 <label className="book-price-att">EVENT PRICE:</label>
-                <label className="book-price-val">1900</label>
+                <label className="book-price-val">{eventCost}/-</label>
               </div>
               <div className="book-price-row">
                 <label className="book-price-att">FOODS PRICE:</label>
-                <label className="book-price-val">1900</label>
+                <label className="book-price-val">{foodCost}/-</label>
               </div>
               <div className="book-price-row">
                 <label className="book-price-att">SERVICES PRICE:</label>
-                <label className="book-price-val">1900</label>
+                <label className="book-price-val">{serviceCost}/-</label>
               </div>
               <div className="book-price-row">
                 <label className="book-price-att">TOTAL COST:</label>
-                <label className="book-price-val">1900</label>
+                <label className="book-price-val">{totalCost}/-</label>
               </div>
             </div>
             <button className="book-venue-btn" type="submit">

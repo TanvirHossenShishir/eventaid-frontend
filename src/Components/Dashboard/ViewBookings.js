@@ -11,7 +11,7 @@ const ViewBookings = () => {
     address: "",
     email: "",
     oldpassword: "",
-    newpassword: ""
+    newpassword: "",
   });
 
   // const [items, setItems] = useState([]);
@@ -31,18 +31,18 @@ const ViewBookings = () => {
   };
 
   const handleSubmit = () => {
-      console.log("after save change: ", formData);
-      let obj = JSON.stringify({
-        firstname: formData.firstname,
-        lastname: formData.lastname,
-        gender: formData.gender,
-        phone: formData.phone,
-        address: formData.address,
-        email: formData.email,
-        oldpassword: formData.oldpassword,
-        newpassword: formData.newpassword,
-      });
-      window.localStorage.setItem("formData", obj);
+    console.log("after save change: ", formData);
+    let obj = JSON.stringify({
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      gender: formData.gender,
+      phone: formData.phone,
+      address: formData.address,
+      email: formData.email,
+      oldpassword: formData.oldpassword,
+      newpassword: formData.newpassword,
+    });
+    window.localStorage.setItem("formData", obj);
 
     //   const formdata = JSON.parse(window.localStorage.getItem("formData"));
     //   localStorage.setItem(

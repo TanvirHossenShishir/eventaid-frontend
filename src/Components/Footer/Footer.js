@@ -5,7 +5,7 @@ import {
   FaFacebookF,
   FaInstagram,
   FaLinkedinIn,
-  FaHeart
+  FaHeart,
 } from "react-icons/fa";
 import { IconContext } from "react-icons/lib";
 import "./footer.css";

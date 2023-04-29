@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { IconContext } from "react-icons/lib";
 import { HiOutlineLogin } from "react-icons/hi";
 
-import { Prevent } from "./Prevent"
+import { Prevent } from "./Prevent";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -39,7 +39,9 @@ const Navbar = () => {
         {navItems.map((item) => {
           return (
             <div
-              className={`navbar-link ${activeItem === item ? "nav-active" : ""}`}
+              className={`navbar-link ${
+                activeItem === item ? "nav-active" : ""
+              }`}
               onClick={() => handleClick(item)}
             >
               {item.title}

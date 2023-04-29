@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import "./manageVenues.css";
 import Venue from "./Venue";
 
-
 const ManageVenues = ({ handleShowAddVenueForm }) => {
-
   const handleAddVenueClick = () => {
     handleShowAddVenueForm();
   };
