@@ -3,10 +3,11 @@ import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
 import axios from "axios";
 
-const AddVenue = ({ venue, event, service, isUser }) => {
-  const createEvent = (venue, foodList, eventList) => {
+const AddVenue = ({ venue, event, service,isUser }) => {
+  const createEvent = (venue, foodList, eventList,userId) => {
     const url = "http://localhost:8081/api/venues/events";
     const data = {
+      userId:userId,
       venueDto: venue,
       foodorServicesList: foodList,
       eventDtoList: eventList,
@@ -128,7 +129,8 @@ const AddVenue = ({ venue, event, service, isUser }) => {
 
   const navigate = useNavigate();
   const handleSubmit = () => {
-    createEvent(formData, submittedServiceData, submittedEventData);
+    const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
+    createEvent(formData, submittedServiceData, submittedEventData,userId);
     navigate("/dashboard");
   };
 

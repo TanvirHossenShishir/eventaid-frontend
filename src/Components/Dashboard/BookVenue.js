@@ -23,7 +23,7 @@ const BookVenue = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-
+  const [venueId,setVenueId]=useState(0);
   const [focusedInput, setFocusedInput] = useState(null);
   
   const handleDatesChange = ({ startDate, endDate }) => {
@@ -52,7 +52,8 @@ const BookVenue = () => {
   const foodOptions = venues
     .filter((venue_) => venue_.venueName === venue)
     .map((venue_) =>
-      venue_.foods.map(({ serviceName, serviceCost }) => ({
+      venue_.foods.map(({ id,serviceName, serviceCost }) => ({
+        id:`${id}`,
         label: `${serviceName}: ${serviceCost}/-`,
         value: serviceName,
       }))
@@ -61,6 +62,7 @@ const BookVenue = () => {
 
   const handleVenueChange = (e) => {
     setVenue(e.target.value);
+    setVenueId(e.target.venue.key);
   };
 
   const filteredEvents = venue
@@ -127,8 +129,35 @@ const BookVenue = () => {
     setService(e);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
+    const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
+    const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
     e.preventDefault();
+    console.log(place+venue+event+food+service+startDate+endDate);
+    console.log(typeof(food))
+    food.map((fo)=>console.log(fo.id))
+    const booking = {
+      place: place,
+      venueId: venueId,
+      eventId: event.id,
+      guests: guests,
+      foodIds: food.map((fo) => fo.id),
+      serviceIds: service.map((se) => se.id),
+      eventCost: eventCost,
+      foodCost: foodCost,
+      serviceCost: serviceCost,
+      totalCost: totalCost,
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+      userId: JSON.parse(window.localStorage.getItem("userdata")).id
+    };
+    console.log(booking);
+    // try {
+    //   const response = await axios.post('http://localhost:8081/api/venues/bookings', booking);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (
@@ -148,6 +177,7 @@ const BookVenue = () => {
               <option value="" selected disabled hidden>
                 Select...
               </option>
+              <option value="Gazipur">Gazipur</option>
               <option value="Mirpur">Mirpur</option>
               <option value="Uttara">Uttara</option>
             </select>
