@@ -31,8 +31,19 @@ const BookVenue = () => {
     setEndDate(endDate);
   };
 
+  const [places, setPlaces] = useState([]);
   const [venues, setVenues] = useState([]);
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:8081/api/venues/places`)
+      .then((resp) => {
+        console.log(resp.data);
+        let result = resp.data;
+        setPlaces(result);
+      });
+  }, []);
+  
   const handlePlaceChange = (e) => {
     setPlace(e.target.value);
     setVenue("");
@@ -62,7 +73,9 @@ const BookVenue = () => {
 
   const handleVenueChange = (e) => {
     setVenue(e.target.value);
-    setVenueId(e.target.venue.key);
+    setEvent("");
+    setFood([]);
+    setService([]);
   };
 
   const filteredEvents = venue
@@ -133,14 +146,25 @@ const BookVenue = () => {
     const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
     const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
     e.preventDefault();
+
+
+    let sev = venue;
+    let selectedVenue = venues.find((venue) => venue.venueName === sev);
+    let vID = selectedVenue ? selectedVenue.id : 0;
+
+    sev = event;
+    let selectedEvent = filteredEvents.find((event) => event.eventName === sev);
+    console.log("sel event: ", selectedEvent);
+    let eID = selectedEvent ? selectedEvent.id : 0;
+
     console.log(place+venue+event+food+service+startDate+endDate);
     console.log(typeof(food))
     food.map((fo)=>console.log(fo.id))
     const booking = {
       place: place,
-      venueId: venueId,
-      eventId: event.id,
-      guests: guests,
+      venueId: vID,
+      eventId: eID,
+      guests: parseInt(guests),
       foodIds: food.map((fo) => fo.id),
       serviceIds: service.map((se) => se.id),
       eventCost: eventCost,
@@ -152,12 +176,13 @@ const BookVenue = () => {
       userId: JSON.parse(window.localStorage.getItem("userdata")).id
     };
     console.log(booking);
-    // try {
-    //   const response = await axios.post('http://localhost:8081/api/venues/bookings', booking);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await axios.post('http://localhost:8081/api/venues/bookings', booking);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+    // window.location.reload();
   };
 
   return (
@@ -177,9 +202,11 @@ const BookVenue = () => {
               <option value="" selected disabled hidden>
                 Select...
               </option>
-              <option value="Gazipur">Gazipur</option>
-              <option value="Mirpur">Mirpur</option>
-              <option value="Uttara">Uttara</option>
+              {places.map((place, index) => (
+                <option key={index} value={place}>
+                  {place}
+                </option>
+              ))}
             </select>
 
             <label className="book-info">VENUE:</label>

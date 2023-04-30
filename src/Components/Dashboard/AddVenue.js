@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
 import axios from "axios";
 
-const AddVenue = ({ venue, event, service,isUser }) => {
-  const createEvent = (venue, foodList, eventList,userId) => {
+// const AddVenue = ({ venue, event, service, editable }) => {
+const AddVenue = ({ venueData, editable }) => {
+  const createEvent = (venue, foodList, eventList, userId) => {
     const url = "http://localhost:8081/api/venues/events";
     const data = {
-      userId:userId,
+      userId: userId,
       venueDto: venue,
       foodorServicesList: foodList,
       eventDtoList: eventList,
@@ -21,10 +22,24 @@ const AddVenue = ({ venue, event, service,isUser }) => {
       .catch((error) => {
         console.log(error);
       });
+
+    if (editable) {
+      axios
+        .delete(`http://localhost:8081/api/venues/del/${venueData.id}`)
+        .then((resp) => {
+          console.log(resp.data);
+        });
+    }
+
+    window.location.reload();
   };
 
   // venue details
-  const [formData, setFormData] = useState(venue);
+  const [formData, setFormData] = useState({
+    venueName: venueData.venueName,
+    place: venueData.place,
+    contact: venueData.contact,
+  });
   // const [formData, setFormData] = useState({
   //   venueName: "",
   //   place: "",
@@ -51,7 +66,9 @@ const AddVenue = ({ venue, event, service,isUser }) => {
     setEventData({ ...eventData, [name]: value });
   };
 
-  const [submittedEventData, setSubmittedEventData] = useState(event);
+  const [submittedEventData, setSubmittedEventData] = useState(
+    venueData.events
+  );
 
   const handleEventSubmit = () => {
     if (eventData.eventName === "" || eventData.eventCost === "") return;
@@ -96,7 +113,9 @@ const AddVenue = ({ venue, event, service,isUser }) => {
     setServiceData({ ...serviceData, [name]: value });
   };
 
-  const [submittedServiceData, setSubmittedServiceData] = useState(service);
+  const [submittedServiceData, setSubmittedServiceData] = useState(
+    venueData.foods
+  );
 
   const handleServiceSubmit = () => {
     if (serviceData.serviceName === "" || serviceData.eventCost === "") return;
@@ -128,9 +147,10 @@ const AddVenue = ({ venue, event, service,isUser }) => {
   };
 
   const navigate = useNavigate();
+
   const handleSubmit = () => {
     const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
-    createEvent(formData, submittedServiceData, submittedEventData,userId);
+    createEvent(formData, submittedServiceData, submittedEventData, userId);
     navigate("/dashboard");
   };
 
@@ -146,7 +166,7 @@ const AddVenue = ({ venue, event, service,isUser }) => {
         value={formData.venueName}
         onChange={handleChange}
         autoComplete="off"
-        disabled={isUser ? "disabled" : ""}
+        disabled={editable ? "" : "disabled"}
       />
       <input
         className="venue-input"
@@ -156,7 +176,7 @@ const AddVenue = ({ venue, event, service,isUser }) => {
         value={formData.place}
         onChange={handleChange}
         autoComplete="off"
-        disabled={isUser ? "disabled" : ""}
+        disabled={editable ? "" : "disabled"}
       />
       <input
         className="venue-input"
@@ -166,18 +186,18 @@ const AddVenue = ({ venue, event, service,isUser }) => {
         value={formData.contact}
         onChange={handleChange}
         autoComplete="off"
-        disabled={isUser ? "disabled" : ""}
+        disabled={editable ? "" : "disabled"}
       />
 
       {/* ------------Event Details------------- */}
       <label className="venue-info">EVENTS:</label>
       {submittedEventData.map((data, index) => (
         <div key={index} className="option-row">
-          <div className="info-attribute">{data.eventName}</div>
+          <div className="add-venue-att">{data.eventName}</div>
           <div className="info-sec">
-            <div className="info-value">{data.eventCost} BDT</div>
+            <div className="add-venue-val">{data.eventCost} BDT</div>
 
-            {!isUser && (
+            {editable && (
               <>
                 <button
                   className="option-btn"
@@ -223,7 +243,7 @@ const AddVenue = ({ venue, event, service,isUser }) => {
         </div>
       )}
 
-      {!isUser && (
+      {editable && (
         <div className="add-events-section">
           <button className="add-events-btn" onClick={handleAddEvent}>
             Add Event
@@ -235,11 +255,11 @@ const AddVenue = ({ venue, event, service,isUser }) => {
       <label className="venue-info">FOODS & SERVICES:</label>
       {submittedServiceData.map((data, index) => (
         <div key={index} className="option-row">
-          <div className="info-attribute">{data.serviceName}</div>
+          <div className="add-venue-att">{data.serviceName}</div>
           <div className="info-sec">
-            <div className="info-value">{data.serviceCost} BDT</div>
+            <div className="add-venue-val">{data.serviceCost} BDT</div>
 
-            {!isUser && (
+            {editable && (
               <>
                 <button
                   className="option-btn"
@@ -285,7 +305,7 @@ const AddVenue = ({ venue, event, service,isUser }) => {
         </div>
       )}
 
-      {!isUser && (
+      {editable && (
         <>
           <div className="add-events-section">
             <button className="add-events-btn" onClick={handleAddService}>

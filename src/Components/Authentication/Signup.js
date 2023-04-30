@@ -166,6 +166,7 @@ const Signup = () => {
         <div className="errorMsg">{error.usernameError}</div>
       )}
       <input
+        required
         type="email"
         placeholder="Email Address"
         name="email"
@@ -176,7 +177,10 @@ const Signup = () => {
         autoComplete="off"
       />
       {error.emailError && <div className="errorMsg">{error.emailError}</div>}
-      <div id="pass-wrapper">
+      <div
+        id="pa
+      requiredss-wrapper"
+      >
         <input
           type={visibility.password ? "text" : "password"}
           placeholder="Password"
@@ -199,6 +203,7 @@ const Signup = () => {
       )}
       <div id="pass-wrapper">
         <input
+          required
           type={visibility.repeatPassword ? "text" : "password"}
           placeholder="Confirm Password"
           name="repeatPassword"
@@ -223,6 +228,7 @@ const Signup = () => {
       <div className="role-selection">
         <label className="role-text">Select Role:</label>
         <select
+          required
           id="role"
           name="role"
           value={userData.role}

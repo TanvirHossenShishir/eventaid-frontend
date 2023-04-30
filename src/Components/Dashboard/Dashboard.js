@@ -15,6 +15,8 @@ import { Prevent } from "../Navigation/Prevent";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
+  const [isEditable, setIsEditable] = useState(false);
+  const [venue, setVenue] = useState([]);
 
   const options = [
     "Manage Venues",
@@ -44,8 +46,10 @@ export default function Dashboard() {
     navigate("/dashboard");
   };
 
-  const handleShowAddVenueForm = () => {
+  const handleShowAddVenueForm = (venueData, editable) => {
     setIsActive(5);
+    setVenue(venueData);
+    setIsEditable(editable);
     navigate("/dashboard");
   };
 
@@ -127,32 +131,17 @@ export default function Dashboard() {
       {isActive === 2 && <ViewBookings />}
       {isActive === 3 && <BookVenue />}
       {isActive === 4 && <Notifications />}
-      {isActive === 5 && (
-        <AddVenue
+      {isActive === 5 && <AddVenue venueData={venue} editable={isEditable} />}
+      {/* <AddVenue
           venue={{
             venueName: "",
             place: "",
             contact: "",
           }}
-          event={[{
-            eventName:"sdfah",
-            eventCost:20,
-          },
-          {
-            eventName:"sdfah",
-            eventCost:20,
-          }]}
-          service={[{
-            serviceName:"sdfah",
-            serviceCost:20,
-          },
-          {
-            serviceName:"sdfah",
-            serviceCost:20,
-          }]}
-          isUser={false}
-        />
-      )}
+          event={[]}
+          service={[]}
+          editable={isEditable}
+        /> */}
     </div>
   );
 }

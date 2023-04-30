@@ -1,25 +1,32 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./manageVenues.css";
+import axios from "axios";
 
-const ManageVenues = ({ handleShowAddVenueForm }) => {
+const Venue = ({ handleShowAddVenueForm, venueData, editable, id, name, place, contact, showBtn }) => {
   const handleAddVenueClick = () => {
-    handleShowAddVenueForm();
+    handleShowAddVenueForm(venueData, editable);
   };
   return (
     <div className="venue-card-container" onClick={handleAddVenueClick}>
-      <div className="venue-card-info">Ifa Community Center</div>
-      <div className="venue-card-info">Mirpur</div>
-      <div className="venue-card-info">880042536</div>
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        Delete
-      </button>
+      <div className="venue-card-info">{name}</div>
+      <div className="venue-card-info">{place}</div>
+      <div className="venue-card-info">{contact}</div>
+      {showBtn && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            axios.delete(`http://localhost:8081/api/venues/del/${id}`).then((resp) => {
+              console.log(resp.data);
+            });
+            window.location.reload();
+          }}
+        >
+          Delete
+        </button>
+      )}
     </div>
   );
 };
 
-export default ManageVenues;
+export default Venue;

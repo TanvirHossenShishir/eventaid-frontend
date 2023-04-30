@@ -50,10 +50,6 @@ const Signin = () => {
         console.log(response.data);
         alert(response.data.message);
         if (response.data.success == true) {
-          setUserData({
-            username: "",
-            password: "",
-          });
           axios
             .get(
               `http://localhost:8081/api/users/username/${userData.username}`
@@ -65,16 +61,22 @@ const Signin = () => {
               let uid = resp.data.id;
               let un = resp.data.name;
               let up = resp.data.email;
+              let rl = resp.data.role;
               let obj = JSON.stringify({
                 id: uid,
                 username: un,
                 useremail: up,
+                role: rl,
               });
 
               window.localStorage.setItem("userdata", obj);
             });
           window.location.reload();
           setFormSubmission(true);
+          setUserData({
+            username: "",
+            password: "",
+          });
         } else {
           setFormSubmission(false);
           return formSubmission;
