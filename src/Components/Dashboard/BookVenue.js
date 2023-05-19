@@ -6,6 +6,7 @@ import "react-dates/lib/css/_datepicker.css";
 import axios from "axios";
 import { MultiSelect } from "react-multi-select-component";
 import moment from "moment";
+import DialogPopup from "../Custom/DialogPopup";
 
 const BookVenue = () => {
   const [place, setPlace] = useState("");
@@ -142,6 +143,9 @@ const BookVenue = () => {
     setService(e);
   };
 
+  const [isValid, setIsValid] = useState(false);
+  const [booking, setBooking] = useState({});
+
   const handleSubmit = async(e) => {
     const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
     const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
@@ -160,7 +164,7 @@ const BookVenue = () => {
     console.log(place+venue+event+food+service+startDate+endDate);
     console.log(typeof(food))
     food.map((fo)=>console.log(fo.id))
-    const booking = {
+    const bookingObj = {
       place: place,
       venueId: vID,
       eventId: eID,
@@ -175,14 +179,21 @@ const BookVenue = () => {
       endDate: formattedEndDate,
       userId: JSON.parse(window.localStorage.getItem("userdata")).id
     };
-    console.log(booking);
-    try {
-      const response = await axios.post('http://localhost:8081/api/venues/bookings', booking);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(bookingObj);
+
+    setBooking(bookingObj);
+    
+    // try {
+    //   const response = await axios.post('http://localhost:8081/api/venues/bookings', bookingObj);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+
+
     // window.location.reload();
+    if(place && venue && event && guests && startDate && endDate)
+      setIsValid(true);
   };
 
   return (
@@ -190,7 +201,7 @@ const BookVenue = () => {
       <form onSubmit={handleSubmit}>
         <div className="book-form-con">
           <div className="book-side-con">
-            <label className="manage-venue-title">Book Event</label>
+            <label className="manage-venue-title">BOOK EVENT</label>
             <label className="book-info">LOCATION:</label>
             <select
               required
@@ -297,7 +308,7 @@ const BookVenue = () => {
                 <label className="book-price-att">FOODS PRICE:</label>
                 <label className="book-price-val">{foodCost}/-</label>
               </div>
-              <div className="book-price-row">
+              <div className="book-price-row hl">
                 <label className="book-price-att">SERVICES PRICE:</label>
                 <label className="book-price-val">{serviceCost}/-</label>
               </div>
@@ -306,9 +317,13 @@ const BookVenue = () => {
                 <label className="book-price-val">{totalCost}/-</label>
               </div>
             </div>
-            <button className="book-venue-btn" type="submit">
+            {/* <button className="book-venue-btn" type="submit">
               BOOK NOW
-            </button>
+            </button> */}
+
+            <div onClick={handleSubmit}>
+              <DialogPopup booking={booking} valid={isValid} />
+            </div>
           </div>
         </div>
       </form>

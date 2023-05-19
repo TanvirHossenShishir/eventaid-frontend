@@ -12,6 +12,8 @@ import { CgProfile } from "react-icons/cg";
 import { BiEdit } from "react-icons/bi";
 import { FaStackOverflow } from "react-icons/fa";
 import { Prevent } from "../Navigation/Prevent";
+import ViewProfile from "../Profile/ViewProfile";
+import EditProfile from "../Profile/EditProfile";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
@@ -23,6 +25,7 @@ export default function Dashboard() {
     "View Bookings",
     "Book Venue",
     "Notifications",
+    "My Profile",
   ];
   const navigate = useNavigate();
 
@@ -46,8 +49,18 @@ export default function Dashboard() {
     navigate("/dashboard");
   };
 
-  const handleShowAddVenueForm = (venueData, editable) => {
+  const handleRouteProfile = () => {
     setIsActive(5);
+    navigate("/dashboard");
+  };
+
+  const handleEditProfile = () => {
+    setIsActive(8);
+    navigate("/dashboard");
+  };
+
+  const handleShowAddVenueForm = (venueData, editable) => {
+    setIsActive(9);
     setVenue(venueData);
     setIsEditable(editable);
     navigate("/dashboard");
@@ -121,6 +134,23 @@ export default function Dashboard() {
                 {option}
               </button>
             )}
+
+            {/* Option 5 */}
+            {option === "My Profile" && (
+              <button
+                className={`dash-side-btn ${
+                  isActive === 5 ? "dash-active" : ""
+                }`}
+                onClick={Prevent(() => handleRouteProfile())}
+              >
+                <CgProfile
+                  size="1.4rem"
+                  color="#E91E63"
+                  id="profile-drop-icn"
+                />
+                {option}
+              </button>
+            )}
           </div>
         ))}
       </div>
@@ -131,7 +161,9 @@ export default function Dashboard() {
       {isActive === 2 && <ViewBookings />}
       {isActive === 3 && <BookVenue />}
       {isActive === 4 && <Notifications />}
-      {isActive === 5 && <AddVenue venueData={venue} editable={isEditable} />}
+      {isActive === 5 && <ViewProfile handleEditProfile={handleEditProfile} />}
+      {isActive === 8 && <EditProfile />}
+      {isActive === 9 && <AddVenue venueData={venue} editable={isEditable} />}
       {/* <AddVenue
           venue={{
             venueName: "",
