@@ -1,143 +1,79 @@
 import React, { useState, useEffect } from "react";
-import "./viewBookings.css";
 import "./manageVenues.css";
+import Venue from "./Venue";
+import axios from "axios";
 
-const ViewBookings = () => {
-  const [formData, setFormData] = useState({
-    firstname: "",
-    lastname: "",
-    gender: "",
-    phone: "",
-    address: "",
-    email: "",
-    oldpassword: "",
-    newpassword: "",
-  });
+const ViewBookings = ({ handleShowAddVenueForm }) => {
+  const handleAddVenueClick = () => {
+    handleShowAddVenueForm(
+      {
+        venueName: "",
+        place: "",
+        contact: "",
+        events: [],
+        foods: [],
+      },
+      true
+    );
+  };
 
-  // const [items, setItems] = useState([]);
+  const [venues, setVenues] = useState([]);
+  const [myvenues, setMyVenues] = useState([]);
 
   useEffect(() => {
-    const formdata = JSON.parse(localStorage.getItem("formData"));
-    if (formdata) {
-      setFormData(formdata);
-    }
+    axios.get(`http://localhost:8081/api/venues/all`).then((resp) => {
+      console.log(resp.data);
+      let result = resp.data;
+      const uid = JSON.parse(window.localStorage.getItem("userdata")).id;
+      let filteredVenues = result.filter((venue) => venue.userId === uid);
+      setMyVenues(filteredVenues);
+      filteredVenues = result.filter((venue) => venue.userId !== uid);
+      setVenues(filteredVenues);
+      console.log(venues);
+    });
   }, []);
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
-    setFormData({ ...formData, [name]: value });
-    return;
-  };
-
-  const handleSubmit = () => {
-    console.log("after save change: ", formData);
-    let obj = JSON.stringify({
-      firstname: formData.firstname,
-      lastname: formData.lastname,
-      gender: formData.gender,
-      phone: formData.phone,
-      address: formData.address,
-      email: formData.email,
-      oldpassword: formData.oldpassword,
-      newpassword: formData.newpassword,
-    });
-    window.localStorage.setItem("formData", obj);
-
-    //   const formdata = JSON.parse(window.localStorage.getItem("formData"));
-    //   localStorage.setItem(
-    //     "userInfo",
-    //     JSON.stringify({ ...formdata, firstname: formData.firstname })
-    //   );
-  };
-
   return (
-    <div className="edit-profile-container">
-      <label className="view-prof-title">EDIT PROFILE</label>
+    <div className="manage-venue-container">
+      <label className="manage-venue-title">VENUE LIST</label>
 
-      <label className="info-title">BASIC INFORMATION</label>
+      {JSON.parse(window.localStorage.getItem("userdata")).role !== "user" && (
+        <div>
+          <button className="add-events-btn" onClick={handleAddVenueClick}>
+            Add Venue
+          </button>
+          <label className="add-venue-val vl-top-mar">MY VENUES:</label>
+          <div className="venue-list">
+            {myvenues.map((venue) => (
+              <Venue
+                id={venue.id}
+                venueData={venue}
+                editable={true}
+                name={venue.venueName}
+                place={venue.place}
+                contact={venue.contact}
+                handleShowAddVenueForm={handleShowAddVenueForm}
+                showBtn={true}
+              />
+            ))}
+          </div>
 
-      <input
-        className="info-row"
-        type="text"
-        placeholder="First Name"
-        name="firstname"
-        value={formData.firstname}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <input
-        className="info-row"
-        type="text"
-        placeholder="Last Name"
-        name="lastname"
-        value={formData.lastname}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <input
-        className="info-row"
-        type="text"
-        placeholder="Gender"
-        name="gender"
-        value={formData.gender}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-
-      <label className="info-title">CONTACT INFORMATION</label>
-
-      <input
-        className="info-row"
-        type="tel"
-        placeholder="Phone"
-        name="phone"
-        value={formData.phone}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <input
-        className="info-row"
-        type="text"
-        placeholder="Address"
-        name="address"
-        value={formData.address}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <input
-        className="info-row"
-        type="email"
-        placeholder="E-mail"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-
-      <label className="info-title">SECURITY INFORMATION</label>
-      <input
-        className="info-row"
-        type="password"
-        placeholder="Old Password"
-        name="oldpassword"
-        value={formData.oldpassword}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <input
-        className="info-row"
-        type="password"
-        placeholder="New Password (optional)"
-        name="newpassword"
-        value={formData.newpassword}
-        onChange={handleChange}
-        autoComplete="off"
-      />
-      <div className="save-changes-section">
-        <button className="save-changes-btn" onClick={handleSubmit}>
-          Save Changes
-        </button>
+          <label className="add-venue-val vl-top-mar">OTHER VENUES:</label>
+        </div>
+      )}
+      <div className="venue-list">
+        {venues.map((venue) => (
+          <Venue
+            id={venue.id}
+            venueData={venue}
+            editable={false}
+            name={venue.venueName}
+            place={venue.place}
+            contact={venue.contact}
+            handleShowAddVenueForm={handleShowAddVenueForm}
+            showBtn={false}
+          />
+        ))}
       </div>
     </div>
   );

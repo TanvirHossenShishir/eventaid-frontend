@@ -57,7 +57,7 @@ const Navbar = () => {
         )}
         {window.localStorage.getItem("isAuthenticated") && (
           <Link
-            to="/dashboard"
+            to="/"
             className="top-buttons profile-link"
             onMouseEnter={() => setProfileDropdown(true)}
             onMouseLeave={() => setProfileDropdown(false)}

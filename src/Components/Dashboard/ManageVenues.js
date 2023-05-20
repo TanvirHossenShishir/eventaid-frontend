@@ -37,26 +37,30 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
     <div className="manage-venue-container">
       <label className="manage-venue-title">VENUE LIST</label>
 
-      <button className="add-events-btn" onClick={handleAddVenueClick}>
-        Add Venue
-      </button>
-      <label className="add-venue-val vl-top-mar">MY VENUES:</label>
-      <div className="venue-list">
-        {myvenues.map((venue) => (
-          <Venue
-            id={venue.id}
-            venueData={venue}
-            editable={true}
-            name={venue.venueName}
-            place={venue.place}
-            contact={venue.contact}
-            handleShowAddVenueForm={handleShowAddVenueForm}
-            showBtn={true}
-          />
-        ))}
-      </div>
+      {JSON.parse(window.localStorage.getItem("userdata")).role !== "user" && (
+        <div>
+          <button className="add-events-btn" onClick={handleAddVenueClick}>
+            Add Venue
+          </button>
+          <label className="add-venue-val vl-top-mar">MY VENUES:</label>
+          <div className="venue-list">
+            {myvenues.map((venue) => (
+              <Venue
+                id={venue.id}
+                venueData={venue}
+                editable={true}
+                name={venue.venueName}
+                place={venue.place}
+                contact={venue.contact}
+                handleShowAddVenueForm={handleShowAddVenueForm}
+                showBtn={true}
+              />
+            ))}
+          </div>
 
-      <label className="add-venue-val vl-top-mar">OTHER VENUES:</label>
+          <label className="add-venue-val vl-top-mar">OTHER VENUES:</label>
+        </div>
+      )}
       <div className="venue-list">
         {venues.map((venue) => (
           <Venue

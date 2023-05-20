@@ -4,16 +4,24 @@ import ManageVenues from "./ManageVenues";
 import ViewBookings from "./ViewBookings";
 import BookVenue from "./BookVenue";
 import Notifications from "./Notifications";
+import BookingHistory from "./BookingHistory";
 import AddVenue from "./AddVenue";
-
-import { useNavigate } from "react-router-dom";
-import "./profileDropdown.css";
-import { CgProfile } from "react-icons/cg";
-import { BiEdit } from "react-icons/bi";
-import { FaStackOverflow } from "react-icons/fa";
-import { Prevent } from "../Navigation/Prevent";
 import ViewProfile from "../Profile/ViewProfile";
 import EditProfile from "../Profile/EditProfile";
+import { Prevent } from "../Navigation/Prevent";
+import { useNavigate } from "react-router-dom";
+import "./profileDropdown.css";
+
+import { RiUserLine } from "react-icons/ri";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { AiOutlineSchedule } from "react-icons/ai";
+import {
+  MdOutlineNotifications,
+  MdOutlinePlace,
+  MdHistory,
+  MdOutlineLogout,
+  MdOutlineBorderColor,
+} from "react-icons/md";
 
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
@@ -21,49 +29,71 @@ export default function Dashboard() {
   const [venue, setVenue] = useState([]);
 
   const options = [
+    "View Users",
     "Manage Venues",
     "View Bookings",
     "Book Venue",
+    "Booking History",
+    "View Venues",
     "Notifications",
     "My Profile",
+    "Logout",
   ];
   const navigate = useNavigate();
 
   const handleRouteView = () => {
     setIsActive(1);
-    navigate("/dashboard");
+    navigate("/");
+  };
+
+  const handleViewUsers = () => {
+    setIsActive(11);
+    navigate("/");
+  };
+
+  const handleBookHistory = () => {
+    setIsActive(12);
+    navigate("/");
   };
 
   const handleRouteEdit = () => {
     setIsActive(2);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   const handleRouteBook = () => {
     setIsActive(3);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   const handleRouteBooking = () => {
     setIsActive(4);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   const handleRouteProfile = () => {
     setIsActive(5);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   const handleEditProfile = () => {
     setIsActive(8);
-    navigate("/dashboard");
+    navigate("/");
+  };
+
+  const handleRouteLogout = () => {
+    alert("Are you sure?");
+    window.location.reload(false);
+    window.localStorage.clear();
+    setIsActive(6);
+    navigate("/landing");
   };
 
   const handleShowAddVenueForm = (venueData, editable) => {
     setIsActive(9);
     setVenue(venueData);
     setIsEditable(editable);
-    navigate("/dashboard");
+    navigate("/");
   };
 
   return (
@@ -71,6 +101,25 @@ export default function Dashboard() {
       <div className="dash-side-tab">
         {options.map((option) => (
           <div className="dash-side-btn-con">
+            {/* Option 11 */}
+            {JSON.parse(window.localStorage.getItem("userdata")).role ===
+              "admin" &&
+              option === "View Users" && (
+                <button
+                  className={`dash-side-btn ${
+                    isActive === 11 ? "dash-active" : ""
+                  }`}
+                  onClick={Prevent(() => handleViewUsers())}
+                >
+                  <HiOutlineUserGroup
+                    size="1.3rem"
+                    color="#F39C6B"
+                    id="profile-drop-icn"
+                  />
+                  {option}
+                </button>
+              )}
+
             {/* Option 1 */}
             {option === "Manage Venues" && (
               <button
@@ -79,44 +128,73 @@ export default function Dashboard() {
                 }`}
                 onClick={Prevent(() => handleRouteView())}
               >
-                <BiEdit size="1.5rem" color="#F57F17" id="profile-drop-icn" />
-                {option}
+                <MdOutlinePlace
+                  size="1.5rem"
+                  color="#437C90"
+                  id="profile-drop-icn"
+                />
+                {JSON.parse(window.localStorage.getItem("userdata")).role ===
+                  "organizer" && option}
+                {JSON.parse(window.localStorage.getItem("userdata")).role !==
+                  "organizer" && "View Venues"}
               </button>
             )}
 
             {/* Option 2 */}
-            {option === "View Bookings" && (
-              <button
-                className={`dash-side-btn ${
-                  isActive === 2 ? "dash-active" : ""
-                }`}
-                onClick={Prevent(() => handleRouteEdit())}
-              >
-                <FaStackOverflow
-                  size="1.5rem"
-                  color="#4DD0E1"
-                  id="profile-drop-icn"
-                />
-                {option}
-              </button>
-            )}
+            {JSON.parse(window.localStorage.getItem("userdata")).role ===
+              "organizer" &&
+              option === "View Bookings" && (
+                <button
+                  className={`dash-side-btn ${
+                    isActive === 2 ? "dash-active" : ""
+                  }`}
+                  onClick={Prevent(() => handleRouteEdit())}
+                >
+                  <AiOutlineSchedule
+                    size="1.4rem"
+                    color="#F57F17"
+                    id="profile-drop-icn"
+                  />
+                  {option}
+                </button>
+              )}
 
             {/* Option 3 */}
-            {option === "Book Venue" && (
-              <button
-                className={`dash-side-btn ${
-                  isActive === 3 ? "dash-active" : ""
-                }`}
-                onClick={Prevent(() => handleRouteBook())}
-              >
-                <CgProfile
-                  size="1.4rem"
-                  color="#E91E63"
-                  id="profile-drop-icn"
-                />
-                {option}
-              </button>
-            )}
+            {JSON.parse(window.localStorage.getItem("userdata")).role ===
+              "user" &&
+              option === "Book Venue" && (
+                <button
+                  className={`dash-side-btn ${
+                    isActive === 3 ? "dash-active" : ""
+                  }`}
+                  onClick={Prevent(() => handleRouteBook())}
+                >
+                  <MdOutlineBorderColor
+                    size="1.3rem"
+                    color="#E91E63"
+                    id="profile-drop-icn"
+                  />
+                  {option}
+                </button>
+              )}
+
+            {JSON.parse(window.localStorage.getItem("userdata")).role ===
+              "user" &&
+              option === "Booking History" && (
+                <button
+                  className={`dash-side-btn ${
+                    isActive === 12 ? "dash-active" : ""
+                  }`}
+                  onClick={Prevent(() => handleBookHistory())}
+                >
+                  <MdHistory
+                    size="1.4rem"
+                    color="#F57F17"
+                    id="profile-drop-icn"
+                  />
+                  {option}
+                </button>
+              )}
 
             {/* Option 4 */}
             {option === "Notifications" && (
@@ -126,9 +204,9 @@ export default function Dashboard() {
                 }`}
                 onClick={Prevent(() => handleRouteBooking())}
               >
-                <CgProfile
+                <MdOutlineNotifications
                   size="1.4rem"
-                  color="#E91E63"
+                  color="#BF6900"
                   id="profile-drop-icn"
                 />
                 {option}
@@ -143,9 +221,26 @@ export default function Dashboard() {
                 }`}
                 onClick={Prevent(() => handleRouteProfile())}
               >
-                <CgProfile
+                <RiUserLine
+                  size="1.3rem"
+                  color="#2F4B26"
+                  id="profile-drop-icn"
+                />
+                {option}
+              </button>
+            )}
+
+            {/* Option 6 */}
+            {option === "Logout" && (
+              <button
+                className={`dash-side-btn ${
+                  isActive === 6 ? "dash-active" : ""
+                }`}
+                onClick={Prevent(() => handleRouteLogout())}
+              >
+                <MdOutlineLogout
                   size="1.4rem"
-                  color="#E91E63"
+                  color="#D63230"
                   id="profile-drop-icn"
                 />
                 {option}
@@ -159,21 +254,12 @@ export default function Dashboard() {
         <ManageVenues handleShowAddVenueForm={handleShowAddVenueForm} />
       )}
       {isActive === 2 && <ViewBookings />}
+      {isActive === 12 && <BookingHistory />}
       {isActive === 3 && <BookVenue />}
       {isActive === 4 && <Notifications />}
       {isActive === 5 && <ViewProfile handleEditProfile={handleEditProfile} />}
       {isActive === 8 && <EditProfile />}
       {isActive === 9 && <AddVenue venueData={venue} editable={isEditable} />}
-      {/* <AddVenue
-          venue={{
-            venueName: "",
-            place: "",
-            contact: "",
-          }}
-          event={[]}
-          service={[]}
-          editable={isEditable}
-        /> */}
     </div>
   );
 }

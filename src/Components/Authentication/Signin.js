@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./login.css";
 import { BsEye } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 const Signin = () => {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -30,6 +32,21 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    //////////////test start
+    // window.localStorage.setItem("isAuthenticated", true);
+    // window.localStorage.setItem(
+    //   "userdata",
+    //   JSON.stringify({
+    //     id: 152,
+    //     username: "shishir",
+    //     useremail: "shishir@gmail.com",
+    //     role: "user",
+    //   })
+    // );
+    // window.location.reload(false);
+    //////////////test end
+    
     let formFields = ["username", "password"];
     let isValid = true;
     formFields.forEach((field) => {
@@ -57,6 +74,7 @@ const Signin = () => {
             .then((resp) => {
               console.log(resp.data);
               window.localStorage.setItem("isAuthenticated", true);
+              console.log("Authenticated");
               let result = resp.data;
               let uid = resp.data.id;
               let un = resp.data.name;
@@ -71,7 +89,8 @@ const Signin = () => {
 
               window.localStorage.setItem("userdata", obj);
             });
-          window.location.reload();
+          // window.location.reload();
+          navigate("/");
           setFormSubmission(true);
           setUserData({
             username: "",

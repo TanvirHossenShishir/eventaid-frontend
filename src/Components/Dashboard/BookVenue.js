@@ -169,15 +169,15 @@ const BookVenue = () => {
       venueId: vID,
       eventId: eID,
       guests: parseInt(guests),
-      foodIds: food.map((fo) => fo.id),
-      serviceIds: service.map((se) => se.id),
+      foodIds: food.map((fo) => parseInt(fo.id)),
+      serviceIds: service.map((se) => parseInt(se.id)),
       eventCost: eventCost,
       foodCost: foodCost,
       serviceCost: serviceCost,
       totalCost: totalCost,
       startDate: formattedStartDate,
       endDate: formattedEndDate,
-      userId: JSON.parse(window.localStorage.getItem("userdata")).id
+      userId: JSON.parse(window.localStorage.getItem("userdata")).id,
     };
     console.log(bookingObj);
 

@@ -5,20 +5,20 @@ export const navItems = [
     path: "/",
     cName: "nav-item",
   },
+  // {
+  //   id: 2,
+  //   title: "DASHBOARD",
+  //   path: "/dashboard",
+  //   cName: "nav-item",
+  // },
   {
     id: 2,
-    title: "DASHBOARD",
-    path: "/dashboard",
-    cName: "nav-item",
-  },
-  {
-    id: 3,
     title: "ABOUT",
     path: "/about",
     cName: "nav-item",
   },
   {
-    id: 4,
+    id: 3,
     title: "CONTACT",
     path: "/contactus",
     cName: "nav-item",
