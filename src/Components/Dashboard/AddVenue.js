@@ -8,12 +8,12 @@ const AddVenue = ({ venueData, editable }) => {
   const createEvent = (venue, foodList, eventList, userId) => {
     const url = "http://localhost:8081/api/venues/events";
     const data = {
-      userId: userId,
+      userId: parseInt(userId),
       venueDto: venue,
       foodorServicesList: foodList,
       eventDtoList: eventList,
     };
-
+    console.log("venue data",data);
     axios
       .post(url, data)
       .then((response) => {
@@ -31,7 +31,7 @@ const AddVenue = ({ venueData, editable }) => {
         });
     }
 
-    window.location.reload();
+    // window.location.reload();
   };
 
   // venue details
