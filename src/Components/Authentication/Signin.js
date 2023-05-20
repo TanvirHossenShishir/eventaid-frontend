@@ -32,20 +32,6 @@ const Signin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    //////////////test start
-    // window.localStorage.setItem("isAuthenticated", true);
-    // window.localStorage.setItem(
-    //   "userdata",
-    //   JSON.stringify({
-    //     id: 152,
-    //     username: "shishir",
-    //     useremail: "shishir@gmail.com",
-    //     role: "user",
-    //   })
-    // );
-    // window.location.reload(false);
-    //////////////test end
     
     let formFields = ["username", "password"];
     let isValid = true;
@@ -65,39 +51,39 @@ const Signin = () => {
       .then((response) => {
         // handle the response
         console.log(response.data);
-        alert(response.data.message);
         if (response.data.success == true) {
           axios
             .get(
               `http://localhost:8081/api/users/username/${userData.username}`
-            )
-            .then((resp) => {
-              console.log(resp.data);
-              window.localStorage.setItem("isAuthenticated", true);
-              console.log("Authenticated");
-              let result = resp.data;
-              let uid = resp.data.id;
-              let un = resp.data.name;
-              let up = resp.data.email;
-              let rl = resp.data.role;
-              let obj = JSON.stringify({
-                id: uid,
-                username: un,
-                useremail: up,
-                role: rl,
+              )
+              .then((resp) => {
+                console.log(resp.data);
+                window.localStorage.setItem("isAuthenticated", true);
+                console.log("Authenticated");
+                let result = resp.data;
+                let uid = resp.data.id;
+                let un = resp.data.name;
+                let up = resp.data.email;
+                let rl = resp.data.role;
+                let obj = JSON.stringify({
+                  id: uid,
+                  username: un,
+                  useremail: up,
+                  role: rl,
+                });
+                
+                window.localStorage.setItem("userdata", obj);
               });
-
-              window.localStorage.setItem("userdata", obj);
-            });
-          // window.location.reload();
-          navigate("/");
-          setFormSubmission(true);
-          setUserData({
-            username: "",
-            password: "",
-          });
-        } else {
-          setFormSubmission(false);
+              navigate("/");
+              setFormSubmission(true);
+              setUserData({
+                username: "",
+                password: "",
+              });
+              window.location.reload();
+            } else {
+              alert(response.data.message);
+              setFormSubmission(false);
           return formSubmission;
         }
       })
