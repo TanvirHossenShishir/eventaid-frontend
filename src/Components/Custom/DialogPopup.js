@@ -81,6 +81,7 @@ const DialogPopup = ({ booking, valid }) => {
       </Dialog.Content>
     </Dialog.Portal>
     }
+    {/* {!valid && console.log(booking.venue.venueName)} */}
   </Dialog.Root>
   );
 };

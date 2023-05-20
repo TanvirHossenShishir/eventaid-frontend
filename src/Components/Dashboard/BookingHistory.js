@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
 import "./bookingHistory.css";
-import Venue from "./Venue";
+import DialogPopup from "../Custom/DialogPopup";
 import axios from "axios";
 
 const BookingHistory = () => {
-
-  const [venues, setVenues] = useState([]);
-  const [myvenues, setMyVenues] = useState([]);
+  const [bookings, setBookings] = useState(null);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     let username = JSON.parse(window.localStorage.getItem("userdata")).username;
-    axios.get(`http://localhost:8081/api/venues/bookings/username/${username}`).then((resp) => {
-      console.log(resp.data);
-      // let result = resp.data;
-      // const uid = JSON.parse(window.localStorage.getItem("userdata")).id;
-      // let filteredVenues = result.filter((venue) => venue.userId === uid);
-      // setMyVenues(filteredVenues);
-      // filteredVenues = result.filter((venue) => venue.userId !== uid);
-      // setVenues(filteredVenues);
-      // console.log(venues);
-    });
+    axios
+      .get(`http://localhost:8081/api/venues/bookings/username/${username}`)
+      .then((resp) => {
+        console.log(resp.data);
+        let result = resp.data;
+        setBookings(result);
+      });
   }, []);
+
+  const handleClick = (booking) => {
+    console.log(booking.event.eventName);
+    setSelectedBooking(booking);
+    alert(booking.event.eventName);
+  }
 
   return (
     <div className="book-history-container">
@@ -34,14 +36,37 @@ const BookingHistory = () => {
           <label className="b-h-total b-h-frmt">Total</label>
           <label className="b-h-status b-h-frmt">Status</label>
         </div>
-        <div className="book-history-row">
-          <label className="b-h-date b-r-frmt brdr-left">2023-05-18</label>
-          <label className="b-h-event b-r-frmt">Birthday Party</label>
-          <label className="b-h-venue b-r-frmt">Mirpur Community Center</label>
-          <label className="b-h-total b-r-frmt">12500/-</label>
-          <label className="b-h-status b-r-frmt brdr-right">Pending</label>
+        <div className="booking-list">
+          {bookings &&
+            bookings.map((booking) => (
+              <div
+                key={booking.id}
+                className="book-history-row"
+                onClick={() => handleClick(booking)}
+              >
+                <label className="b-h-date b-r-frmt brdr-left">
+                  2023-05-18
+                </label>
+                <label className="b-h-event b-r-frmt">
+                  {booking.event.eventName}
+                </label>
+                <label className="b-h-venue b-r-frmt">
+                  {booking.venue.venueName}
+                </label>
+                <label className="b-h-total b-r-frmt">
+                  {booking.totalCost}/-
+                </label>
+                <label className="b-h-status b-r-frmt brdr-right">
+                  Pending
+                </label>
+              </div>
+            ))}
         </div>
       </div>
+
+      {selectedBooking && (
+        <DialogPopup booking={selectedBooking} valid={false} />
+      )}
     </div>
   );
 };
