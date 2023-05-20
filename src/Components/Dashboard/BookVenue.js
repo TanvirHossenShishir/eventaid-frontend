@@ -177,7 +177,7 @@ const BookVenue = () => {
       totalCost: totalCost,
       startDate: formattedStartDate,
       endDate: formattedEndDate,
-      userId: JSON.parse(window.localStorage.getItem("userdata")).id
+      userId: JSON.parse(window.localStorage.getItem("userdata")).id,
     };
     console.log(bookingObj);
 

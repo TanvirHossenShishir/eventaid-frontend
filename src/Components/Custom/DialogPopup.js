@@ -14,6 +14,7 @@ const DialogPopup = ({ booking, valid }) => {
     } catch (error) {
       console.log(error);
     }
+    console.log("Booking Data: ", booking);
 
     window.location.reload();
   }
@@ -80,6 +81,7 @@ const DialogPopup = ({ booking, valid }) => {
       </Dialog.Content>
     </Dialog.Portal>
     }
+    {/* {!valid && console.log(booking.venue.venueName)} */}
   </Dialog.Root>
   );
 };

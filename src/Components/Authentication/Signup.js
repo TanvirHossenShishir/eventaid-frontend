@@ -177,10 +177,7 @@ const Signup = () => {
         autoComplete="off"
       />
       {error.emailError && <div className="errorMsg">{error.emailError}</div>}
-      <div
-        id="pa
-      requiredss-wrapper"
-      >
+      <div id="pass-wrapper">
         <input
           type={visibility.password ? "text" : "password"}
           placeholder="Password"
