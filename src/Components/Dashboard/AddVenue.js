@@ -105,6 +105,7 @@ const AddVenue = ({ venueData, editable }) => {
   const [serviceData, setServiceData] = useState({
     serviceName: "",
     serviceCost: "",
+    what:"food"
   });
 
   const handleServiceChange = (e) => {

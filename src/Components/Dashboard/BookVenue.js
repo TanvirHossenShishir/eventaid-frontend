@@ -178,6 +178,7 @@ const BookVenue = () => {
       startDate: formattedStartDate,
       endDate: formattedEndDate,
       userId: JSON.parse(window.localStorage.getItem("userdata")).id,
+      status:"pending"
     };
     console.log(bookingObj);
 

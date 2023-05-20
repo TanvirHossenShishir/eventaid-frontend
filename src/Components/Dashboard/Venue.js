@@ -19,7 +19,7 @@ const Venue = ({ handleShowAddVenueForm, venueData, editable, id, name, place, c
             axios.delete(`http://localhost:8081/api/venues/del/${id}`).then((resp) => {
               console.log(resp.data);
             });
-            window.location.reload();
+            // window.location.reload();
           }}
         >
           Delete
