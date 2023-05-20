@@ -15,7 +15,7 @@ const DialogPopup = ({ booking, valid }) => {
       console.log(error);
     }
 
-    // window.location.reload();
+    window.location.reload();
   }
 
 
