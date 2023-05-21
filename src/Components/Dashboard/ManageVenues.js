@@ -43,6 +43,9 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
             Add Venue
           </button>
           <label className="add-venue-val vl-top-mar">MY VENUES:</label>
+          <label className="empty-venue-text">
+            You do not have added any venue yet.
+          </label>
           <div className="venue-list">
             {myvenues.map((venue) => (
               <Venue

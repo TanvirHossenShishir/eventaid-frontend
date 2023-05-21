@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
 import "./bookingHistory.css";
-import DialogPopup from "../Custom/DialogPopup";
 import axios from "axios";
+import DialogBookHistory from "../Custom/DialogBookHistory";
 
 const BookingHistory = () => {
   const [bookings, setBookings] = useState(null);
-  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [render, setRender] = useState(true);
+
+  const handleRender = (status) => {
+    setRender(status);
+  }
 
   useEffect(() => {
     let username = JSON.parse(window.localStorage.getItem("userdata")).username;
@@ -15,14 +19,9 @@ const BookingHistory = () => {
         console.log(resp.data);
         let result = resp.data;
         setBookings(result);
+        setRender(false);
       });
-  }, []);
-
-  const handleClick = (booking) => {
-    console.log(booking.event.eventName);
-    setSelectedBooking(booking);
-    alert(booking.event.eventName);
-  }
+  }, [render]);
 
   return (
     <div className="book-history-container">
@@ -39,34 +38,10 @@ const BookingHistory = () => {
         <div className="booking-list">
           {bookings &&
             bookings.map((booking) => (
-              <div
-                key={booking.id}
-                className="book-history-row"
-                onClick={() => handleClick(booking)}
-              >
-                <label className="b-h-date b-r-frmt brdr-left">
-                  2023-05-18
-                </label>
-                <label className="b-h-event b-r-frmt">
-                  {booking.event.eventName}
-                </label>
-                <label className="b-h-venue b-r-frmt">
-                  {booking.venue.venueName}
-                </label>
-                <label className="b-h-total b-r-frmt">
-                  {booking.totalCost}/-
-                </label>
-                <label className="b-h-status b-r-frmt brdr-right">
-                  Pending
-                </label>
-              </div>
+              <DialogBookHistory booking={booking} handleRender={handleRender}/>
             ))}
         </div>
       </div>
-
-      {selectedBooking && (
-        <DialogPopup booking={selectedBooking} valid={false} />
-      )}
     </div>
   );
 };

@@ -120,19 +120,19 @@ const Signup = () => {
       .then((response) => {
         // handle the response
         console.log(response.data.success);
-        alert(response.data.message);
-        if (response.data.success == true)
-          setUserData({
-            username: "",
-            email: "",
-            password: "",
-            repeatPassword: "",
-            role: "", // new field for role selection
-          });
+        if (response.data.success === true)
+        setUserData({
+          username: "",
+          email: "",
+          password: "",
+          repeatPassword: "",
+          role: "", // new field for role selection
+        });
       })
       .catch((error) => {
         // handle the error
         console.log(error);
+        alert(error);
       });
   };
 

@@ -24,8 +24,11 @@
     margin-bottom: 100px;
     color: #444444;
     float: right;
+    padding: 5px 10px;
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: .8rem;
 }
-
 .save-changes-btn:hover{
     color: teal;
 }

@@ -213,8 +213,9 @@
 }
 
 .venue-card-container {
-  background: #eee;
+  background: #ededed;
   padding: 15px;
+  padding-bottom: 5px;
   display: flex;
   flex-direction: column;
   border-radius: 4px;
@@ -223,7 +224,7 @@
   min-width: 31.79%;
   border: 1px solid transparent;
   flex-basis: calc(33.33% - 20px);
-  /* margin: 10px; */
+  /* background-image: linear-gradient(to right, #ededed 0%,  #ddd 100%); */
 }
 .venue-card-container:hover {
   border: 1px solid var(--accent-color);
@@ -233,6 +234,26 @@
   clear: both;
 }
 
+.cntr{
+  justify-content: center !important;
+}
+
+.venue-card-attribute{
+  font-size: .6rem;
+  text-transform: uppercase;
+  color: #777;
+  font-weight: 600;
+}
+
+.venue-card-info{
+  font-size: .9rem;
+  font-weight: 500;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+
+
 .venue-list {
   margin-top: 10px;
   display: flex;
@@ -240,12 +261,18 @@
   gap: 20px;
 }
 
-.venue-card-info{
-  font-size: .9rem;
-  padding: 3px;
-}
 
 .vl-top-mar{
   margin-top: 20px;
 }
 
+.empty-venue-text{
+  margin: 10px 0 20px 0;
+  text-transform: uppercase;
+  font-size: .8rem;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}

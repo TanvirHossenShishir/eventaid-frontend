@@ -145,7 +145,7 @@ const BookVenue = () => {
 
   const [isValid, setIsValid] = useState(false);
   const [booking, setBooking] = useState({});
-
+  
   const handleSubmit = async(e) => {
     const formattedStartDate = moment(startDate).format('YYYY-MM-DD');
     const formattedEndDate = moment(endDate).format('YYYY-MM-DD');
@@ -182,14 +182,6 @@ const BookVenue = () => {
     console.log(bookingObj);
 
     setBooking(bookingObj);
-    
-    // try {
-    //   const response = await axios.post('http://localhost:8081/api/venues/bookings', bookingObj);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
 
     // window.location.reload();
     if(place && venue && event && guests && startDate && endDate)
@@ -317,9 +309,6 @@ const BookVenue = () => {
                 <label className="book-price-val">{totalCost}/-</label>
               </div>
             </div>
-            {/* <button className="book-venue-btn" type="submit">
-              BOOK NOW
-            </button> */}
 
             <div onClick={handleSubmit}>
               <DialogPopup booking={booking} valid={isValid} />
