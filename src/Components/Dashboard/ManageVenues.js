@@ -19,6 +19,11 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
 
   const [venues, setVenues] = useState([]);
   const [myvenues, setMyVenues] = useState([]);
+  const [render, setRender] = useState(true);
+
+  const handleRender = (status) => {
+    setRender(status);
+  };
 
   useEffect(() => {
     axios.get(`http://localhost:8081/api/venues/all`).then((resp) => {
@@ -29,9 +34,10 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
       setMyVenues(filteredVenues);
       filteredVenues = result.filter((venue) => venue.userId !== uid);
       setVenues(filteredVenues);
+      setRender(false);
       console.log(venues);
     });
-  }, []);
+  }, [render]);
 
   return (
     <div className="manage-venue-container">
@@ -43,9 +49,11 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
             Add Venue
           </button>
           <label className="add-venue-val vl-top-mar">MY VENUES:</label>
-          <label className="empty-venue-text">
-            You do not have added any venue yet.
-          </label>
+          {!myvenues && (
+            <label className="empty-venue-text">
+              You do not have added any venue yet.
+            </label>
+          )}
           <div className="venue-list">
             {myvenues.map((venue) => (
               <Venue
@@ -57,6 +65,7 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
                 contact={venue.contact}
                 handleShowAddVenueForm={handleShowAddVenueForm}
                 showBtn={true}
+                handleRender={handleRender}
               />
             ))}
           </div>
@@ -75,6 +84,7 @@ const ManageVenues = ({ handleShowAddVenueForm }) => {
             contact={venue.contact}
             handleShowAddVenueForm={handleShowAddVenueForm}
             showBtn={false}
+            handleRender={handleRender}
           />
         ))}
       </div>

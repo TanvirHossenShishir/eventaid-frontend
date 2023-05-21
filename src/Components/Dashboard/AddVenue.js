@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
 import axios from "axios";
 
-// const AddVenue = ({ venue, event, service, editable }) => {
 const AddVenue = ({ venueData, editable }) => {
   const createEvent = (venue, foodList, eventList, userId) => {
+    console.log("Data after update: ", venueData);
     const url = "http://localhost:8081/api/venues/events";
     const data = {
       userId: parseInt(userId),
@@ -13,7 +13,7 @@ const AddVenue = ({ venueData, editable }) => {
       foodorServicesList: foodList,
       eventDtoList: eventList,
     };
-    console.log("venue data",data);
+    console.log("venue data", data);
     axios
       .post(url, data)
       .then((response) => {
@@ -30,8 +30,6 @@ const AddVenue = ({ venueData, editable }) => {
           console.log(resp.data);
         });
     }
-
-    // window.location.reload();
   };
 
   // venue details
@@ -40,11 +38,6 @@ const AddVenue = ({ venueData, editable }) => {
     place: venueData.place,
     contact: venueData.contact,
   });
-  // const [formData, setFormData] = useState({
-  //   venueName: "",
-  //   place: "",
-  //   contact: "",
-  // });
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -101,17 +94,24 @@ const AddVenue = ({ venueData, editable }) => {
 
   // equipments data
   const [showServiceForm, setShowServiceForm] = useState(false);
-
+  
   const [serviceData, setServiceData] = useState({
     serviceName: "",
     serviceCost: "",
-    what:"food"
+    what: "",
   });
-
+  
   const handleServiceChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     setServiceData({ ...serviceData, [name]: value });
+  };
+  
+  const [selectedType, setSelectedType] = useState("");
+
+  const handleTypeChange = (e) => {
+    setSelectedType(e.target.id);
+    setServiceData({ ...serviceData, what: e.target.id });
   };
 
   const [submittedServiceData, setSubmittedServiceData] = useState(
@@ -121,19 +121,22 @@ const AddVenue = ({ venueData, editable }) => {
   const handleServiceSubmit = () => {
     if (serviceData.serviceName === "" || serviceData.eventCost === "") return;
     setSubmittedServiceData([...submittedServiceData, serviceData]);
-    setServiceData({ serviceName: "", serviceCost: "" });
+    setServiceData({ serviceName: "", serviceCost: "", what: "" });
+    setSelectedType("");
     setShowServiceForm(false);
   };
 
   const handleAddService = () => {
     setShowServiceForm(true);
-    setServiceData({ serviceName: "", serviceCost: "" });
+    setServiceData({ serviceName: "", serviceCost: "", what: "" });
   };
 
   const handleServiceUpdate = (index) => {
     const selectedServiceData = submittedServiceData[index];
 
     setServiceData(selectedServiceData);
+    setSelectedType(selectedServiceData.what);
+    console.log(selectedServiceData);
     setShowServiceForm(true);
 
     const newServiceData = [...submittedServiceData];
@@ -150,9 +153,14 @@ const AddVenue = ({ venueData, editable }) => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
-    createEvent(formData, submittedServiceData, submittedEventData, userId);
-    navigate("/dashboard");
+    if (formData.venueName && formData.place && formData.contact) {
+      const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
+      createEvent(formData, submittedServiceData, submittedEventData, userId);
+      navigate("/");
+      // window.location.reload(false);
+    } else {
+      alert("Insert all the required information before saving.");
+    }
   };
 
   return (
@@ -168,6 +176,7 @@ const AddVenue = ({ venueData, editable }) => {
         onChange={handleChange}
         autoComplete="off"
         disabled={editable ? "" : "disabled"}
+        required
       />
       <input
         className="venue-input"
@@ -178,6 +187,7 @@ const AddVenue = ({ venueData, editable }) => {
         onChange={handleChange}
         autoComplete="off"
         disabled={editable ? "" : "disabled"}
+        required
       />
       <input
         className="venue-input"
@@ -188,6 +198,7 @@ const AddVenue = ({ venueData, editable }) => {
         onChange={handleChange}
         autoComplete="off"
         disabled={editable ? "" : "disabled"}
+        required
       />
 
       {/* ------------Event Details------------- */}
@@ -256,7 +267,10 @@ const AddVenue = ({ venueData, editable }) => {
       <label className="venue-info">FOODS & SERVICES:</label>
       {submittedServiceData.map((data, index) => (
         <div key={index} className="option-row">
-          <div className="add-venue-att">{data.serviceName}</div>
+          <div className="add-venue-att pre-cont">
+            <div className="pre-att">{data.what}:</div>
+            {data.serviceName}
+          </div>
           <div className="info-sec">
             <div className="add-venue-val">{data.serviceCost} BDT</div>
 
@@ -283,7 +297,7 @@ const AddVenue = ({ venueData, editable }) => {
       {showServiceForm && (
         <div className="add-events-section">
           <input
-            className="event-input"
+            className="service-input"
             type="text"
             placeholder="Name"
             name="serviceName"
@@ -292,7 +306,7 @@ const AddVenue = ({ venueData, editable }) => {
             autoComplete="off"
           />
           <input
-            className="event-input"
+            className="service-input fix-price-width"
             type="number"
             placeholder="Price"
             name="serviceCost"
@@ -300,6 +314,32 @@ const AddVenue = ({ venueData, editable }) => {
             onChange={handleServiceChange}
             autoComplete="off"
           />
+
+          <div className="wrapper">
+            <input
+              type="radio"
+              name="select"
+              id="food"
+              checked={selectedType === "food"}
+              onChange={handleTypeChange}
+            />
+            <input
+              type="radio"
+              name="select"
+              id="service"
+              checked={selectedType === "service"}
+              onChange={handleTypeChange}
+            />
+            <label htmlFor="food" className="option food">
+              <div className="dot"></div>
+              <span>Food</span>
+            </label>
+            <label htmlFor="service" className="option service">
+              <div className="dot"></div>
+              <span>Service</span>
+            </label>
+          </div>
+
           <button className="submit-evt-btn" onClick={handleServiceSubmit}>
             Submit
           </button>

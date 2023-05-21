@@ -12,9 +12,11 @@ const Venue = ({
   place,
   contact,
   showBtn,
+  handleRender,
 }) => {
   const handleAddVenueClick = () => {
     handleShowAddVenueForm(venueData, editable);
+    
   };
   return (
     <div className="venue-card-container" onClick={handleAddVenueClick}>
@@ -26,14 +28,15 @@ const Venue = ({
       <div className="venue-card-info">{contact}</div>
       {showBtn && (
         <button
+          className="venue-del-btn"
           onClick={(e) => {
             e.stopPropagation();
             axios
               .delete(`http://localhost:8081/api/venues/del/${id}`)
               .then((resp) => {
                 console.log(resp.data);
+                handleRender(true);
               });
-            // window.location.reload();
           }}
         >
           Delete
