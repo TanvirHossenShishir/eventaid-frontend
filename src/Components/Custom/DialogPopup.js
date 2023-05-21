@@ -19,7 +19,8 @@ const DialogPopup = ({ booking, valid}) => {
     window.location.reload(false);
     console.log("Booking Data: ", booking);
 
-  };
+    window.location.reload();
+  }
 
   return (
     <Dialog.Root>

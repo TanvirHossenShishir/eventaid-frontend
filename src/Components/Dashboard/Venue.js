@@ -33,7 +33,7 @@ const Venue = ({
               .then((resp) => {
                 console.log(resp.data);
               });
-            window.location.reload();
+            // window.location.reload();
           }}
         >
           Delete
