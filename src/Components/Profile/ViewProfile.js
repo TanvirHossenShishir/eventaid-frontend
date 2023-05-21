@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./viewProfile.css";
 import Avatar from "@mui/material/Avatar";
-import { HiUpload } from "react-icons/hi";
+import axios from "axios";
 
 const ViewProfile = ({ handleEditProfile }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -36,8 +36,21 @@ const ViewProfile = ({ handleEditProfile }) => {
 
   const handleEditClick = () => {
     handleEditProfile(true);
-  }
- 
+  };
+
+  useEffect(() => {
+    const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
+    axios
+      .get(`http://localhost:8081/api/personalInfo/${userId}`)
+      .then((response) => {
+        console.log("tesssst",response.data);
+        window.localStorage.setItem("formData", JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <div className="view-profile-container">
       <div className="profile-sidebar">
@@ -109,7 +122,9 @@ const ViewProfile = ({ handleEditProfile }) => {
           />
         </button>
 
-        <button className="profile-upload-btn" onClick={handleEditClick}>Edit Profile</button>
+        <button className="profile-upload-btn" onClick={handleEditClick}>
+          Edit Profile
+        </button>
       </div>
     </div>
   );

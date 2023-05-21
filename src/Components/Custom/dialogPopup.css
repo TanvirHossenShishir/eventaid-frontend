@@ -128,10 +128,16 @@
 .Label-Sub {
   font-size: 15px;
   color: var(--mauve12);
-  width: 70%;
-  /* width: 90px; */
-  /* text-align: left; */
+  /* width: 70%; */
 }
+
+.Label-cont{
+  display: flex;
+  flex-direction: column;
+
+}
+
+
 
 .Input {
   all:unset;

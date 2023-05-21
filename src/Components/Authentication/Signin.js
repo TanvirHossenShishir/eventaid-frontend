@@ -80,7 +80,7 @@ const Signin = () => {
                 username: "",
                 password: "",
               });
-              window.location.reload();
+              window.location.reload(false);
             } else {
               alert(response.data.message);
               setFormSubmission(false);

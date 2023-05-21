@@ -4,9 +4,12 @@ import "./notifications.css";
 const Notifications = () => {
   
   return (
-    <>
-        <label>Notifications</label>
-    </>
+    <div className="noti-con">
+      <label className="notification-title">NOTIFICATION</label>
+      <label className="empty-notification">
+        No new notification to show.
+      </label>
+    </div>
   );
 };
 

@@ -50,11 +50,12 @@
 
 .book-history-row{
     margin-bottom: 8px;
-    font-size: 0.9rem;
+    font-size: 17px;
     font-weight: 500;
     color: #fff;
     display: flex;
     border-radius: 7px;
+    text-transform: capitalize;
 }
 
 .b-r-frmt{
@@ -63,10 +64,17 @@
     align-items: center;
     cursor: pointer;
     padding: 13px;
+    background-image: linear-gradient(to right, #00897B 0%,  #26A69A 100%);
+}
+
+.pending{
+    background-image: linear-gradient(to right, #00897B 0%,  #26A69A 100%);
+}
+.completed{
+    background-image: linear-gradient(to right, #43A047 0%,  #66BB6A 100%);
+}
+.cancelled{
     background-image: linear-gradient(to right, #cb483c 0%,  #ed6a5e 100%);
-    /* background-image: linear-gradient(to right, #00897B 0%,  #26A69A 100%); */
-    /* background-image: linear-gradient(to right, #F57C00 0%,  #FFA726 100%); */
-    /* background-image: linear-gradient(to right, #43A047 0%,  #66BB6A 100%); */
 }
 
 .brdr-left{

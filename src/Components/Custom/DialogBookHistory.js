@@ -6,10 +6,16 @@ import axios from "axios";
 import "../Dashboard/bookingHistory.css";
 
 const DialogBookHistory = ({ booking, handleRender }) => {
+
   const handleConfirmation = async (e) => {
+    console.log("evt: ", booking);
+    const updatedBooking = {
+      ...booking,
+      status: e.target.name,
+    };
     try {
-      const response = await axios.delete(
-        `http://localhost:8081/api/venues/bookings/${booking.id}`);
+      const response = await axios.put(
+        `http://localhost:8081/api/venues/booking/${booking.id}`, updatedBooking);
       console.log(response.data);
       handleRender(true);
     } catch (error) {
@@ -32,17 +38,21 @@ const DialogBookHistory = ({ booking, handleRender }) => {
     <Dialog.Root>
       <Dialog.Trigger asChild>
         <div className="book-history-row">
-          <label className="b-h-date b-r-frmt brdr-left">
-            {startDate.toLocaleDateString()}
+          <label className={`b-h-date b-r-frmt brdr-left ${booking.status}`}>
+            {startDate.toLocaleDateString("en-GB")}
           </label>
-          <label className="b-h-event b-r-frmt">
+          <label className={`b-h-event b-r-frmt ${booking.status}`}>
             {booking.event.eventName}
           </label>
-          <label className="b-h-venue b-r-frmt">
+          <label className={`b-h-venue b-r-frmt ${booking.status}`}>
             {booking.venue.venueName}
           </label>
-          <label className="b-h-total b-r-frmt">{booking.totalCost}/-</label>
-          <label className="b-h-status b-r-frmt brdr-right">Pending</label>
+          <label className={`b-h-total b-r-frmt ${booking.status}`}>
+            {booking.totalCost}/-
+          </label>
+          <label className={`b-h-status b-r-frmt brdr-right ${booking.status}`}>
+            {booking.status}
+          </label>
         </div>
       </Dialog.Trigger>
 
@@ -66,15 +76,22 @@ const DialogBookHistory = ({ booking, handleRender }) => {
           <fieldset className="Fieldset">
             <label className="Label">Foods:</label>
             <label className="Label-Sub">
-              {booking.food.map((food) => food.serviceName).join(", ")}
+              {booking.food
+                .filter((service) => service.what === "food")
+                .map((service) => service.serviceName)
+                .join(", ")}
             </label>
           </fieldset>
           <fieldset className="Fieldset">
             <label className="Label">Services:</label>
             <label className="Label-Sub">
-              {booking.food.map((service) => service.serviceName).join(", ")}
+              {booking.food
+                .filter((service) => service.what === "service")
+                .map((service) => service.serviceName)
+                .join(", ")}
             </label>
           </fieldset>
+
           <fieldset className="Fieldset">
             <label className="Label">Date:</label>
             <label className="Label-Sub">
@@ -98,8 +115,24 @@ const DialogBookHistory = ({ booking, handleRender }) => {
               justifyContent: "flex-end",
             }}
           >
+            {JSON.parse(window.localStorage.getItem("userdata")).role !==
+              "user" && (
+              <Dialog.Close asChild>
+                <button
+                  className="Button blue"
+                  name="completed"
+                  onClick={handleConfirmation}
+                >
+                  Complete Booking
+                </button>
+              </Dialog.Close>
+            )}
             <Dialog.Close asChild>
-              <button className="Button blue" onClick={handleConfirmation}>
+              <button
+                className="Button blue"
+                name="cancelled"
+                onClick={handleConfirmation}
+              >
                 Cancel Booking
               </button>
             </Dialog.Close>

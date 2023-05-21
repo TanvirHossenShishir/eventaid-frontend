@@ -64,13 +64,29 @@ const BookVenue = () => {
   const foodOptions = venues
     .filter((venue_) => venue_.venueName === venue)
     .map((venue_) =>
-      venue_.foods.map(({ id,serviceName, serviceCost }) => ({
-        id:`${id}`,
-        label: `${serviceName}: ${serviceCost}/-`,
-        value: serviceName,
-      }))
+      venue_.foods
+        .filter((food) => food.what === "food")
+        .map(({ id, serviceName, serviceCost }) => ({
+          id: `${id}`,
+          label: `${serviceName}: ${serviceCost}/-`,
+          value: serviceName,
+        }))
     )
     .flat();
+
+  const serviceOptions = venues
+    .filter((venue_) => venue_.venueName === venue)
+    .map((venue_) =>
+      venue_.foods
+        .filter((food) => food.what === "service")
+        .map(({ id, serviceName, serviceCost }) => ({
+          id: `${id}`,
+          label: `${serviceName}: ${serviceCost}/-`,
+          value: serviceName,
+        }))
+    )
+    .flat();
+
 
   const handleVenueChange = (e) => {
     setVenue(e.target.value);
@@ -261,7 +277,7 @@ const BookVenue = () => {
 
             <label className="book-info">SERVICES:</label>
             <MultiSelect
-              options={foodOptions}
+              options={serviceOptions}
               value={service}
               onChange={handleServiceChange}
               labelledBy="Select"
@@ -312,7 +328,16 @@ const BookVenue = () => {
             </div>
 
             <div onClick={handleSubmit}>
-              <DialogPopup booking={booking} valid={isValid} />
+              <DialogPopup
+                booking={booking}
+                summary={{
+                  venue: venue,
+                  event: event,
+                  food: food,
+                  service: service,
+                }}
+                valid={isValid}
+              />
             </div>
           </div>
         </div>

@@ -129,7 +129,7 @@ const EditProfile = () => {
         autoComplete="off"
       />
 
-      <label className="info-title">SECURITY INFORMATION</label>
+      {/* <label className="info-title">SECURITY INFORMATION</label>
       <input
         className="info-row"
         type="password"
@@ -147,7 +147,7 @@ const EditProfile = () => {
         value={formData.newpassword}
         onChange={handleChange}
         autoComplete="off"
-      />
+      /> */}
       <div className="save-changes-section">
         <button className="save-changes-btn" onClick={handleSubmit}>
           Save Changes

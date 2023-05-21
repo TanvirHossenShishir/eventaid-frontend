@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./manageVenues.css";
 import axios from "axios";
 
-const AddVenue = ({ venueData, editable }) => {
+const AddVenue = ({ venueData, editable, update }) => {
   const createEvent = (venue, foodList, eventList, userId) => {
-    console.log("Data after update: ", venueData);
     const url = "http://localhost:8081/api/venues/events";
     const data = {
       userId: parseInt(userId),
@@ -13,7 +12,15 @@ const AddVenue = ({ venueData, editable }) => {
       foodorServicesList: foodList,
       eventDtoList: eventList,
     };
-    console.log("venue data", data);
+    console.log("Data after update: ", data);
+    if (update) {
+      axios
+        .post(`http://localhost:8081/api/venues/events/${venueData.id}`, data)
+        .then((resp) => {
+          console.log(resp.data);
+        });
+    }
+    else{
     axios
       .post(url, data)
       .then((response) => {
@@ -22,14 +29,8 @@ const AddVenue = ({ venueData, editable }) => {
       .catch((error) => {
         console.log(error);
       });
-
-    if (editable) {
-      axios
-        .delete(`http://localhost:8081/api/venues/del/${venueData.id}`)
-        .then((resp) => {
-          console.log(resp.data);
-        });
     }
+    
   };
 
   // venue details
@@ -157,7 +158,7 @@ const AddVenue = ({ venueData, editable }) => {
       const userId = JSON.parse(window.localStorage.getItem("userdata")).id;
       createEvent(formData, submittedServiceData, submittedEventData, userId);
       navigate("/");
-      // window.location.reload(false);
+      window.location.reload(false);
     } else {
       alert("Insert all the required information before saving.");
     }

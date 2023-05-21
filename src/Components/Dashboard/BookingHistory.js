@@ -25,8 +25,7 @@ const BookingHistory = () => {
 
   return (
     <div className="book-history-container">
-      <label className="book-history-title">BOOKING HISTORY</label>
-
+        <label className="book-history-title">BOOKING HISTORY</label>
       <div>
         <div className="book-history-header">
           <label className="b-h-date b-h-frmt">Date</label>
@@ -38,7 +37,10 @@ const BookingHistory = () => {
         <div className="booking-list">
           {bookings &&
             bookings.map((booking) => (
-              <DialogBookHistory booking={booking} handleRender={handleRender}/>
+              <DialogBookHistory
+                booking={booking}
+                handleRender={handleRender}
+              />
             ))}
         </div>
       </div>

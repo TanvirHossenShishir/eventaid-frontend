@@ -15,7 +15,7 @@ const Venue = ({
   handleRender,
 }) => {
   const handleAddVenueClick = () => {
-    handleShowAddVenueForm(venueData, editable);
+    handleShowAddVenueForm(venueData, editable, true);
     
   };
   return (

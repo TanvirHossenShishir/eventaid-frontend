@@ -4,9 +4,10 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import "./dialogPopup.css";
 import axios from "axios";
 
-const DialogPopup = ({ booking, valid}) => {
+const DialogPopup = ({ booking, summary, valid}) => {
   const handleConfirmation = async (e) => {
     console.log("Clicked?");
+    console.log(summary);
     try {
       const response = await axios.post(
         "http://localhost:8081/api/venues/bookings",
@@ -18,8 +19,6 @@ const DialogPopup = ({ booking, valid}) => {
     }
     window.location.reload(false);
     console.log("Booking Data: ", booking);
-
-    window.location.reload();
   }
 
   return (
@@ -37,19 +36,23 @@ const DialogPopup = ({ booking, valid}) => {
             </Dialog.Description>
             <fieldset className="Fieldset">
               <label className="Label">Event:</label>
-              <label className="Label-Sub">{booking.venue}</label>
+              <label className="Label-Sub">{summary.event}</label>
             </fieldset>
             <fieldset className="Fieldset">
               <label className="Label">Venue:</label>
-              <label className="Label-Sub">{booking.venue}</label>
+              <label className="Label-Sub">{summary.venue}</label>
             </fieldset>
             <fieldset className="Fieldset">
               <label className="Label">Foods:</label>
-              <label className="Label-Sub"></label>
+              <label className="Label-Sub">
+                {summary.food.map((food) => food.label).join(", ")}
+              </label>
             </fieldset>
             <fieldset className="Fieldset">
               <label className="Label">Services:</label>
-              <label className="Label-Sub">{booking.venue}</label>
+              <label className="Label-Sub">
+                {summary.service.map((service) => service.label).join(", ")}
+              </label>
             </fieldset>
             <fieldset className="Fieldset">
               <label className="Label">Date:</label>

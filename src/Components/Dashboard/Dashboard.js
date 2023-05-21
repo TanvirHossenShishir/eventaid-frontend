@@ -5,6 +5,7 @@ import ViewBookings from "./ViewBookings";
 import BookVenue from "./BookVenue";
 import Notifications from "./Notifications";
 import BookingHistory from "./BookingHistory";
+import ViewUsers from "./ViewUsers";
 import AddVenue from "./AddVenue";
 import ViewProfile from "../Profile/ViewProfile";
 import EditProfile from "../Profile/EditProfile";
@@ -26,6 +27,7 @@ import {
 export default function Dashboard() {
   const [isActive, setIsActive] = useState(1);
   const [isEditable, setIsEditable] = useState(false);
+  const [isUpdate, setIsUpdate] = useState(false);
   const [venue, setVenue] = useState([]);
 
   const options = [
@@ -89,10 +91,11 @@ export default function Dashboard() {
     navigate("/landing");
   };
 
-  const handleShowAddVenueForm = (venueData, editable) => {
+  const handleShowAddVenueForm = (venueData, editable, isUpdate) => {
     setIsActive(9);
     setVenue(venueData);
     setIsEditable(editable);
+    setIsUpdate(isUpdate);
     navigate("/");
   };
 
@@ -141,8 +144,8 @@ export default function Dashboard() {
             )}
 
             {/* Option 2 */}
-            {JSON.parse(window.localStorage.getItem("userdata")).role ===
-              "organizer" &&
+            {JSON.parse(window.localStorage.getItem("userdata")).role !==
+              "user" &&
               option === "View Bookings" && (
                 <button
                   className={`dash-side-btn ${
@@ -254,12 +257,13 @@ export default function Dashboard() {
         <ManageVenues handleShowAddVenueForm={handleShowAddVenueForm} />
       )}
       {isActive === 2 && <ViewBookings />}
+      {isActive === 11 && <ViewUsers />}
       {isActive === 12 && <BookingHistory />}
       {isActive === 3 && <BookVenue />}
       {isActive === 4 && <Notifications />}
       {isActive === 5 && <ViewProfile handleEditProfile={handleEditProfile} />}
       {isActive === 8 && <EditProfile />}
-      {isActive === 9 && <AddVenue venueData={venue} editable={isEditable} />}
+      {isActive === 9 && <AddVenue venueData={venue} editable={isEditable} update={isUpdate}/>}
     </div>
   );
 }
